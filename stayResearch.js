@@ -32,3 +32,15 @@ export function validateStayResearch(leads){
  }
  return errors;
 }
+
+// Copy-only inquiry draft. No visitor information is collected or transmitted.
+export function buildStayInquiry(lead){
+ if(!lead||!stayResearchLeads.some(item=>item.id===lead.id))throw Error('등록되지 않은 숙소 조사 후보');
+ return `[${lead.name}] 반려동물 동반 숙박 문의드립니다.\n\n`+
+  `희망 날짜: (체크인/체크아웃 직접 입력)\n희망 객실: (객실명 직접 입력)\n반려동물: (종류/견종/몸무게/마릿수 직접 입력)\n\n`+
+  `1. 해당 날짜와 객실에 반려동물 동반 및 실제 예약이 가능한가요?\n`+
+  `2. 견종·몸무게·마릿수별 제한과 추가요금/보증금은 어떻게 되나요?\n`+
+  `3. 객실·침구·마당·수영장 등 이용 가능 구역과 필수 준비물은 무엇인가요?\n`+
+  `4. 취소·환불 규정과 공식 예약 방법은 무엇인가요?\n\n`+
+  `※ 공개자료 조사 후보를 보고 문의드리며, 최신 운영 조건을 확인받고 싶습니다.`;
+}

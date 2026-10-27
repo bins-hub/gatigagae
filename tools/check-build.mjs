@@ -11,7 +11,7 @@ for(const x of ['/* MATCHING_MODULE */','/* RESEARCH_MODULE */','/* PROFILE_MODU
 if(!robots.includes('Disallow: /'))throw Error('Unexpected search index setting');
 if(validatePlaces(places).length)throw Error('Source data invalid');
 for(const p of places)if(!html.includes(p.name))throw Error('Place absent from static bundle: '+p.name);
-if(!html.includes('자료 버전 0.12.5'))throw Error('Version mismatch');
+if(!html.includes('자료 버전 0.12.6'))throw Error('Version mismatch');
 for(const venue of places){
  const name='dist/places/'+venue.id+'/index.html';
  if(!fs.existsSync(name))throw Error('Missing venue page '+name);
@@ -65,4 +65,4 @@ if(!fs.existsSync('reports/geolocation-readiness.json'))throw Error('Missing evi
 if(fs.existsSync('dist/geolocation-readiness.json'))throw Error('Internal geo report must never be public');
 if(fs.existsSync('dist/verification-priority.csv'))throw Error('Operations report is accidentally public');
 if(places.some(p=>p.policy?.verifiedOn))throw Error('Unexpected verified policies: confirm authorization before publishing');
-console.log('v0.12.5 lodging-research bundle validated:',places.length,'unverified research venues');
+console.log('v0.12.6 lodging inquiry bundle validated:',places.length,'unverified research venues');
