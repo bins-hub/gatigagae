@@ -1,3 +1,4 @@
+import {regionSearchHref} from './searchRoute.js';
 // All public pages are generated from sourced research. They do not imply entry permission.
 export const REGIONS=Object.freeze({하남:'hanam',남양주:'namyangju',양평:'yangpyeong'});
 export function escapeHtml(value){
@@ -33,9 +34,9 @@ function placePage(p){
 function regionPage(region,subset){
  const kind=subset.length&&subset.every(p=>p.category==='카페')?'애견동반 카페':'반려견 동반 장소';
  const title=esc(region)+' '+kind+' 조사 후보';
- const header='<div class="eyebrow">지역별 장소 조사 / 업체 직접 확인 전</div><h1>'+title+'</h1><p class="muted">공개자료를 바탕으로 '+subset.length+'곳의 후보를 정리했습니다. 최신 영업 여부와 체중·공간 규정은 업체에 문의하세요.</p><div class="warning">현재 지역 내 업체 직접 검증 완료 '+subset.filter(x=>x.policy?.verifiedOn).length+'곳. 목록은 확정 추천이 아닙니다.</div>';
- const cards='<div class="grid">'+subset.map(p=>'<article class="item"><div class="eyebrow">'+esc(p.category||'장소')+' · '+esc(p.research?.level==='needs_identity'?'영업 확인 필요':'공개자료 조사')+'</div><h2><a href="../../places/'+esc(p.id)+'/">'+esc(p.name)+'</a></h2><p>'+esc(p.research?.summary||p.note||'')+'</p><p>'+esc(p.research?.address||'주소 확인 필요')+'</p><a href="../../places/'+esc(p.id)+'/">규정·출처 자세히</a></article>').join('')+'</div>';
- return shell(region+' '+kind+' 공개자료 조사',region+' 지역 '+kind+' 공개자료 조사 후보 '+subset.length+'곳. 업체 직접 검증 전 정보입니다.',header+cards);
+ const header='<div class="eyebrow">'+esc(region)+' 애견동반 카페 · 반려견과 갈 카페 찾기</div><h1>'+title+'</h1><p>'+esc(region)+'에서 강아지와 갈 카페를 찾고 계신가요? 이 페이지는 조사된 '+subset.length+'곳의 <strong>공개자료 근거와 입장 전 확인사항</strong>을 비교할 수 있게 정리한 목록입니다. 소형견도 실내 출입·이동장·마릿수 제한이 다를 수 있습니다.</p><div class="warning">업체 직접 검증 완료 '+subset.filter(x=>x.policy?.verifiedOn).length+'곳. 현재 방문 가능 여부와 실내 동반은 확정되지 않았습니다. 후보가 적다고 해서 지역 내 모든 카페를 조사한 것은 아닙니다.</div><div class="actions"><a href="'+esc(regionSearchHref(REGIONS[region]))+'">'+esc(region)+' 카페만 검색 결과로 보기</a><a href="../../guides/cafes/">다른 지역 카페 알아보기</a></div>';
+ const cards='<div class="grid">'+subset.map(p=>'<article class="item"><div class="eyebrow">'+esc(p.category||'장소')+' · '+esc(p.research?.level==='needs_identity'?'영업 확인 필요':'공개자료 조사')+'</div><h2><a href="../../places/'+esc(p.id)+'/">'+esc(p.name)+'</a></h2><p>'+esc(p.research?.summary||p.note||'')+'</p><p>'+esc(p.research?.address||'주소 확인 필요')+'</p><p><strong>규정 상태:</strong> 업체 직접 확인 전 · '+esc(p.research?.level==='conflict'?'공개자료 상충':p.research?.level==='boundary'?'제한 기준 경계 확인 필요':p.research?.level==='needs_identity'?'영업 여부 확인 필요':'현행 입장 조건 확인 필요')+'</p><a href="../../places/'+esc(p.id)+'/">이 장소 입장 조건과 원문 보기</a></article>').join('')+'</div>';
+ const advice='<section class="panel"><h2>'+esc(region)+' 애견동반 카페 방문 전 확인</h2><ol><li>현재 영업·휴무 여부를 확인하세요.</li><li>실내 좌석·테라스·실외 전용 구역을 구분하세요.</li><li>몸무게·견종·마릿수 및 이동장·목줄 규정을 문의하세요.</li></ol><p class="muted">이 목록은 매장별 입장을 보증하지 않습니다. 원문 출처와 조사일을 각 상세 페이지에서 확인할 수 있습니다.</p></section>';return shell(region+' '+kind+' 공개자료 조사',region+' '+kind+' 후보 '+subset.length+'곳과 업체별 체중·실내 이용 확인사항, 공개자료 출처. 업체 직접 확인 전 정보입니다.',header+cards+advice);
 }
 export function buildStaticPages(places){
  const result={};
