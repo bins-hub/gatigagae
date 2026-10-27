@@ -16,7 +16,7 @@ for(const venue of places){
  if(!fs.existsSync(name))throw Error('Missing venue page '+name);
  const page=fs.readFileSync(name,'utf8');
  if(!page.includes('noindex,nofollow')||!page.includes(escapeHtml(venue.name)))throw Error('Invalid venue detail: '+venue.id);
- if(!html.includes('./places/'+venue.id+'/'))throw Error('Homepage missing link to venue: '+venue.id);
+ if(!html.includes('href="./places/${encodeURIComponent(p.id)}/"'))throw Error('Homepage missing dynamic venue permalinks');
 }
 for(const slug of Object.values(REGIONS)){
  const filename='dist/regions/'+slug+'/index.html';
