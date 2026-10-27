@@ -30,12 +30,20 @@ test('MOULY and 아이펫스맘 are labeled as demo advertising, with no unverif
  assert.ok(s.includes('PAW PARTNERS')&&s.includes('sponsor-title'));
  assert.equal((s.match(/class="sponsor-brand sponsor-brand--/g)||[]).length,2);
  assert.ok(!s.includes('data-track'));
+ const publicBanner=previewBannerHtml('brand',true);
+ assert.ok(publicBanner.includes('광고 · 브랜드 소개'));
+ assert.ok(!publicBanner.includes('광고 · 테스트 미리보기'));
+ assert.ok(!publicBanner.includes('<a '));
+ const recruit=previewBannerHtml('recruit');
+ assert.ok(recruit.includes('광고 파트너 자리 · 준비 중'));
+ assert.ok(!recruit.includes('<a '));
 
 });
 test('Existing sourced-place search retains prominence and handles preview close',()=>{
  assert.ok(source.includes('const bannerPreviewMode=isBannerPreview(window.location.search);'));
  assert.ok(source.includes('let bannerDismissed=false;'));
- assert.ok(source.includes('shouldInsertBanner(i,list.length,bannerPreviewMode,bannerDismissed)'));
+ assert.ok(source.includes('const bannerEnabled=true;'));
+ assert.ok(source.includes('shouldInsertBanner(i,list.length,bannerEnabled,bannerDismissed)'));
  assert.ok(source.includes('bannerDismissed=true;render();return;'));
  assert.ok(source.includes('.sponsor-preview{grid-column:1/-1'));
  assert.ok(source.includes('grid-template-columns:1fr;gap:9px'));
@@ -45,4 +53,10 @@ test('Existing sourced-place search retains prominence and handles preview close
 
  assert.ok(source.includes('id="quick-search-form"'));
  assert.ok(source.includes('noindex,nofollow'));
+});
+
+test('Public banner never alters data validity or search indexing',()=>{
+ assert.ok(source.includes('13곳 공개자료 조사 · 업체 직접 검증 0곳'));
+ assert.ok(source.includes('noindex,nofollow'));
+ assert.ok(source.includes('const bannerPreviewStyle=bannerPreviewMode'));
 });
