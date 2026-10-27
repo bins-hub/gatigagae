@@ -1,3 +1,4 @@
+import {validCoordinates} from './geo.js';
 const days=['mon','tue','wed','thu','fri','sat','sun'];
 const iso=s=>typeof s==='string' && /^\d{4}-\d{2}-\d{2}$/.test(s) && !Number.isNaN(Date.parse(s+'T00:00:00Z'));
 const https=s=>typeof s==='string' && /^https:\/\/[^\s/]+(?:\/[^\s]*)?$/i.test(s);
@@ -15,6 +16,11 @@ export function validatePlaces(places){
   else for(const src of r.sources)if(!src.label || !https(src.url))issues.push(id+': invalid research source');
   if(r?.additionalConditions){
     for(const key of ['breed','dogs','days'])if(typeof r.additionalConditions[key]!=='string' || !r.additionalConditions[key].trim())issues.push(id+': missing additional condition '+key);
+  }
+  if(p.geolocation!=null){
+    const g=p.geolocation;
+    if(!validCoordinates(g)||!https(g.sourceUrl)||!iso(g.verifiedOn))
+      issues.push(id+': geolocation requires valid coordinates, dated evidence and an HTTPS source');
   }
   if(p.policy==null)continue;
   const q=p.policy;
