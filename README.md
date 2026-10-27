@@ -1,6 +1,6 @@
 # 같이가개
 
-버전: 0.5.0 (장소별 상세 페이지 10개·지역별 3개·검증 대기 목록 생성)
+버전: 0.6.0 (오프라인 승인·반려·충돌 방지 및 검증 좌표 기반 거리 계산 준비)
 
 중대형견의 체중과 이용 공간으로 장소를 살펴보는 정적 웹 MVP. 하남·남양주·양평부터 시작합니다.
 
@@ -18,6 +18,10 @@ python3 -m http.server 8080 --directory dist
 `dist/index.html`은 단독 파일로 열어도 작동합니다. 원본 `index.html`은 빌드용 템플릿입니다.
 
 ## 현재 상태
+
+- 업체 정보 정정은 **원본값 확인 → 출처 근거 → 운영자 검토 승인/반려 → 별도 로컬 적용** 절차로 관리합니다. 온라인 관리자 로그인 기능은 아직 없습니다.
+- 거리 계산 함수와 확인된 좌표만 받는 준비 코드를 추가했습니다. **현재 근거가 확인된 장소 좌표 0곳**이므로 실제 거리순 검색 UI나 위치 권한 요청은 제공하지 않습니다.
+- `reports/geolocation-readiness.json`은 위치 데이터 확보 전 조사 목록으로, 공개 `dist/`에 포함하지 않습니다.
 
 - 장소 ID 기준으로 `places/<id>/` 상세 페이지 10개와 `regions/{hanam,namyangju,yangpyeong}/` 지역별 페이지 3개를 빌드 때 자동 생성합니다. 별도 사이트가 아니고 기존 같이가개 GitHub Pages의 하위 주소입니다.
 - 모든 상세/지역 페이지는 외부 공개자료의 출처·주의 문구를 표시하며 검증 전 `noindex,nofollow`입니다. 지도는 네이버 지도 **검색 링크**이지 검증 좌표가 아닙니다.
@@ -64,7 +68,7 @@ GitHub Pages 공개 주소: https://bins-hub.github.io/gatigagae/ . 실제 사�
 
 ## 운영 문서와 배포 자동화
 
-- [내부 검증·정보 수정 초안 절차](docs/OPERATIONS.md)
+- [내부 검증·정보 수정 승인/반려 절차](docs/OPERATIONS.md)
 - [GitHub Pages 자동 발행 전환 방법](docs/AUTO_DEPLOY.md)
 - [지속 개발 로드맵](docs/DEVELOPMENT_ROADMAP.md)
 
