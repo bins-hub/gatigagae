@@ -5,9 +5,9 @@ import {searchReadiness} from '../searchReadiness.js';
 const places=JSON.parse(readFileSync(new URL('../data/places.json',import.meta.url),'utf8'));
 test('Current unverified site cannot automatically become indexable',()=>{
  const r=searchReadiness(places);
- assert.equal(r.researchCandidates,10);
+ assert.equal(r.researchCandidates,13);
  assert.equal(r.directlyVerifiedVenueCount,0);
- assert.deepEqual(r.categories,['카페']);
+ assert.deepEqual(r.categories,['식당','카페']);
  assert.equal(r.prerequisitesSatisfied,false);
  assert.equal(r.automaticIndexingAllowed,false);
  assert.ok(r.blockers.length>=3);
