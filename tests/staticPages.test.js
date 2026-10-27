@@ -28,6 +28,8 @@ test('All venue pages link primary evidence and do not claim verified policies',
 test('Region pages contain only their own researched places',()=>{
  for(const [region,slug] of Object.entries(REGIONS)){
   const html=result['regions/'+slug+'/index.html'];
+  assert.ok(html.includes(region+' 애견동반 카페 조사 후보'),region);
+  assert.ok(html.includes('업체 직접 검증 완료 0곳'),region);
   for(const p of places){
    if(p.region===region) assert.ok(html.includes('places/'+p.id+'/'),p.id);
    else assert.ok(!html.includes('places/'+p.id+'/'),p.id);
