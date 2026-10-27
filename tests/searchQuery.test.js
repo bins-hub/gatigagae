@@ -37,3 +37,9 @@ test('Empty searches list the research candidates with unverified status',()=>{
  assert.equal(interpretPlaceQuery('하남 반려견 동반 식당').unsupported,true);
  assert.ok(places.every(p=>p.policy===null));
 });
+test('Pension, pet accommodation and pool villa searches never substitute cafes',()=>{
+ for(const phrase of ['양평 애견동반 펜션','남양주 반려동물 동반 숙소','하남 애견동반펜션','애견동반 풀빌라','대형견 동반 독채펜션']){
+  assert.deepEqual(matched(phrase),[],phrase);
+  assert.equal(interpretPlaceQuery(phrase).type,'stays',phrase);
+ }
+});

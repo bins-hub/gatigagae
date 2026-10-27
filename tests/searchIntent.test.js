@@ -5,9 +5,9 @@ import {buildIntentPages,intentCards} from '../intentPages.js';
 import {keywordHypotheses,keywordHypothesisCsv,SEARCH_INTENTS} from '../keywordResearch.js';
 const places=JSON.parse(readFileSync(new URL('../data/places.json',import.meta.url),'utf8'));
 const html=readFileSync(new URL('../index.html',import.meta.url),'utf8');
-test('Four evidence-based guides including two unverified restaurant leads',()=>{
+test('Five distinct guides including an explicitly empty lodging category',()=>{
  const pages=buildIntentPages(places);
- assert.deepEqual(Object.keys(pages).sort(),['guides/cafes/index.html','guides/indoor/index.html','guides/restaurants/index.html','guides/weekend/index.html']);
+ assert.deepEqual(Object.keys(pages).sort(),['guides/cafes/index.html','guides/indoor/index.html','guides/restaurants/index.html','guides/stays/index.html','guides/weekend/index.html']);
  for(const [path,page] of Object.entries(pages)){
   assert.match(page,/noindex,nofollow/,path);
   assert.match(page,/업체 직접 검증 전/,path);
@@ -16,11 +16,15 @@ test('Four evidence-based guides including two unverified restaurant leads',()=>
  assert.match(pages['guides/cafes/index.html'],/애견동반 카페/);
  assert.match(pages['guides/weekend/index.html'],/완성된 코스로 추천하지 않습니다/);
  assert.match(pages['guides/indoor/index.html'],/직접 확인한 실내 동반 가능 장소는/);
+ assert.match(pages['guides/stays/index.html'],/등록된 숙소 0곳/);
+ assert.match(pages['guides/stays/index.html'],/추가요금/);
+ assert.doesNotMatch(pages['guides/stays/index.html'],/places\/ramenondo/);
 });
 test('Available intent cards link to guides; restaurant is nonclickable research pending',()=>{
  const cards=intentCards(places);
- assert.equal(cards.length,4);assert.equal(cards.find(x=>x.id==='cafes').count,11);
+ assert.equal(cards.length,5);assert.equal(cards.find(x=>x.id==='cafes').count,11);
  assert.equal(cards.find(x=>x.id==='restaurants').count,2);
+ assert.equal(cards.find(x=>x.id==='stays').count,0);
  assert.ok(html.includes('href="./guides/restaurants/"'));
  for(const x of cards.filter(c=>c.href))assert.ok(html.includes('href="'+x.href+'"'),x.href);
 });

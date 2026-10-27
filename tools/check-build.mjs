@@ -11,7 +11,7 @@ for(const x of ['/* MATCHING_MODULE */','/* RESEARCH_MODULE */','/* PROFILE_MODU
 if(!robots.includes('Disallow: /'))throw Error('Unexpected search index setting');
 if(validatePlaces(places).length)throw Error('Source data invalid');
 for(const p of places)if(!html.includes(p.name))throw Error('Place absent from static bundle: '+p.name);
-if(!html.includes('자료 버전 0.12.3'))throw Error('Version mismatch');
+if(!html.includes('자료 버전 0.12.4'))throw Error('Version mismatch');
 for(const venue of places){
  const name='dist/places/'+venue.id+'/index.html';
  if(!fs.existsSync(name))throw Error('Missing venue page '+name);
@@ -28,7 +28,7 @@ for(const slug of Object.values(REGIONS)){
 }
 if(!fs.existsSync('reports/review-queue.csv'))throw Error('Verification review queue not generated');
 if(fs.existsSync('dist/review-queue.csv'))throw Error('Internal review queue is accidentally public');
-const expectedGuidePaths=['guides/cafes/index.html','guides/restaurants/index.html','guides/weekend/index.html','guides/indoor/index.html'];
+const expectedGuidePaths=['guides/cafes/index.html','guides/restaurants/index.html','guides/weekend/index.html','guides/indoor/index.html','guides/stays/index.html'];
 for(const name of expectedGuidePaths){
  if(!fs.existsSync('dist/'+name))throw Error('Missing intent guide: '+name);
  const page=fs.readFileSync('dist/'+name,'utf8');
@@ -48,6 +48,8 @@ if(!html.includes('card-evidence')||!html.includes('/#report-correction'))throw 
 if(!html.includes('/#visit-check'))throw Error('Venue visit checklist action missing');
 for(const token of ['id="quick-search-form"','id="quick-query"','interpretPlaceQuery(q)','카페 조사 후보'])if(!html.includes(token))throw Error('Top-level natural language search missing: '+token);
 if(!html.includes('식당 조사 후보 · 2곳'))throw Error('Restaurant research status incorrectly displayed');
+if(!html.includes('href="./guides/stays/"')||!html.includes('등록 숙소 0곳'))throw Error('Missing accurate zero-venue lodging guide link');
+if(!fs.readFileSync('dist/guides/stays/index.html','utf8').includes('예약 가능한 펜션 목록이나 가격·후기를 제공하지 않습니다'))throw Error('Lodging guide falsely implies bookable inventory');
 const expectedKeywords=keywordHypotheses(places);
 if(expectedKeywords.length!==90 || expectedKeywords.some(k=>k.measuredMonthlySearchVolume!==null||k.measuredCompetition!==null))throw Error('Invalid measured keyword hypotheses');
 if(!fs.existsSync('reports/keyword-hypotheses.csv'))throw Error('Private keyword audit not generated');
@@ -62,4 +64,4 @@ if(!fs.existsSync('reports/geolocation-readiness.json'))throw Error('Missing evi
 if(fs.existsSync('dist/geolocation-readiness.json'))throw Error('Internal geo report must never be public');
 if(fs.existsSync('dist/verification-priority.csv'))throw Error('Operations report is accidentally public');
 if(places.some(p=>p.policy?.verifiedOn))throw Error('Unexpected verified policies: confirm authorization before publishing');
-console.log('v0.12.3 filter-context bundle validated:',places.length,'unverified research venues');
+console.log('v0.12.4 lodging-readiness bundle validated:',places.length,'unverified research venues');

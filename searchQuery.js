@@ -6,7 +6,7 @@ const common=new Set(['애견동반','반려견동반','강아지동반','애견
 const cafe=new Set(['카페','애견카페','커피숍','커피']);
 const unsupported={
  restaurants:new Set(['식당','맛집','음식점','레스토랑','밥집']),
- stays:new Set(['펜션','숙소','숙박','호텔','캠핑장']),
+ stays:new Set(['펜션','숙소','숙박','호텔','캠핑장','풀빌라','독채펜션','애견동반펜션','반려견동반펜션','반려동물동반숙소','애견동반숙소','애견펜션']),
  parks:new Set(['공원','운동장','산책로'])
 };
 function tokens(query){return String(query||'').normalize('NFKC').trim().toLowerCase().split(/[\s,/.!?·()[\]{}]+/u).filter(Boolean);}
@@ -51,5 +51,7 @@ export function queryCaution(query){
   notices.push('실내 좌석 동반 가능 여부는 업체의 최신 규정으로 확인되지 않았습니다.');
  if(terms.some(t=>['입장가능','동반가능','확실히','가능한'].includes(t)))
   notices.push('이 목록은 입장을 확약하지 않으며 방문 전 매장 확인이 필요합니다.');
+ if(terms.some(t=>unsupported.stays.has(t)))
+  notices.push('현재 조사·게시된 애견동반 펜션 및 숙소는 0곳입니다. 카페·식당을 숙소 대신 표시하지 않으며 숙박 조건·공실·요금은 확인되지 않았습니다.');
  return notices.join(' ');
 }
