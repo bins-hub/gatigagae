@@ -9,6 +9,7 @@ export function makeCorrectionDraft(places,{id,field,value,sourceUrl,observedOn=
  if(!/^\d{4}-\d{2}-\d{2}$/.test(observedOn)||Number.isNaN(Date.parse(observedOn+'T00:00:00Z')))throw Error('Invalid observation date');
  if(typeof note!=='string'||note.length>1000)throw Error('Note exceeds allowed length');
  return {id:venue.id,venueName:venue.name,region:venue.region,status:'pending_review',
+  previousValue:venue.research?.[field]??null,
   change:{section:'research',field,value:value.trim()},evidence:{url:sourceUrl,observedOn},
   note:note.trim(),requiresOperatorApproval:true,publicPolicyUnchanged:true};
 }
