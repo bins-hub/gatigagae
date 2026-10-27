@@ -1,5 +1,7 @@
 // Conservative keyword interpretation: discover research candidates, never certify admission.
 const REGION_NAMES=['하남','남양주','양평'];
+// Known out-of-coverage city/district names must not match incidental street-name substrings.
+const OUTSIDE_LOCATION_TERMS=new Set(['서울','강남','강북','송파','강동','서초','마포','수원','성남','구리','인천','부산','대전','대구','고양','일산','용인','가평','광명','과천','동탄','안양','의정부']);
 const common=new Set(['애견동반','반려견동반','강아지동반','애견','반려견','강아지','댕댕이','강아지랑','반려견과','강아지와','갈만한곳','갈곳','가볼만한곳','동반','가능','추천','근처','오늘','주말','나들이','갈만한','비오는날','비','실내','야외','테라스','소형견','중형견','대형견','반려동물','함께','경기도','경기']);
 const cafe=new Set(['카페','애견카페','커피숍','커피']);
 const unsupported={
@@ -28,6 +30,7 @@ export function queryMatchesPlace(place,query){
  const parsed=interpretPlaceQuery(query);
  if(!parsed.raw)return true;
  if(parsed.conflictingRegion||parsed.unsupported)return false;
+ if(!parsed.region&&parsed.rest.some(t=>OUTSIDE_LOCATION_TERMS.has(t)))return false;
  if(parsed.region&&place.region!==parsed.region)return false;
  if(parsed.type==='cafes'&&place.category!=='카페')return false;
  const address=String(place.research?.address||'');
