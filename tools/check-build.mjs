@@ -40,7 +40,8 @@ if(!html.includes('href="./guides/cafes/"')||!html.includes('id="intent-title"')
 if(!html.includes('parseSearchRoute(window.location.search)')||!html.includes('let filter={weight:null'))throw Error('Region-search deep links or optional weight missing');
 if(!html.includes('queryMatchesPlace(p,filter.query)'))throw Error('Natural Korean keyword search parser is missing');
 if(!html.includes('id="query-caution"')||!html.includes('queryCaution(filter.query)'))throw Error('Real-time and indoor query warnings are missing');
-for(const token of ['isBannerPreview(window.location.search)','bannerPreviewMode','shouldInsertBanner(i,list.length,bannerPreviewMode,bannerDismissed)','data-dismiss-banner','MOULY','아이펫스맘'])if(!html.includes(token))throw Error('Brand preview gate missing: '+token);
+for(const token of ['isBannerPreview(window.location.search)','bannerPreviewMode','shouldInsertBanner(i,list.length,bannerEnabled,bannerDismissed)','data-dismiss-banner','MOULY','아이펫스맘'])if(!html.includes(token))throw Error('Brand preview gate missing: '+token);
+if(!html.includes('const bannerEnabled=true;'))throw Error('User-approved brand banner display is missing');
 if(html.includes('<a href="https://smartstore.naver.com/')||html.includes('data-banner-pixel'))throw Error('Unapproved store redirect/tracking in banner preview');
 for(const token of ['sponsor-brand--mouly','sponsor-brand--ipetsmom','<svg viewBox=','PAW PARTNERS','.sponsor-art--mouly{color:','.sponsor-art--ipetsmom{color:'])if(!html.includes(token))throw Error('Polished responsive banner asset missing: '+token);
 if(!html.includes('card-evidence')||!html.includes('/#report-correction'))throw Error('Search results must link correction note and show research date');
