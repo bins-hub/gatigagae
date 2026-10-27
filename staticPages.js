@@ -31,10 +31,11 @@ function placePage(p){
  return shell(p.name+' · '+p.region+' 동반 규정 조사',p.name+' 공개자료 조사: '+(r.summary||p.note||'입장 규정 미확인'),heading+announcement+warning+'<p>'+esc(r.summary||p.note||'')+'</p>'+data+rules+contact+citation);
 }
 function regionPage(region,subset){
- const title=esc(region)+' 반려견 동반 장소 조사';
+ const kind=subset.length&&subset.every(p=>p.category==='카페')?'애견동반 카페':'반려견 동반 장소';
+ const title=esc(region)+' '+kind+' 조사 후보';
  const header='<div class="eyebrow">지역별 장소 조사 / 업체 직접 확인 전</div><h1>'+title+'</h1><p class="muted">공개자료를 바탕으로 '+subset.length+'곳의 후보를 정리했습니다. 최신 영업 여부와 체중·공간 규정은 업체에 문의하세요.</p><div class="warning">현재 지역 내 업체 직접 검증 완료 '+subset.filter(x=>x.policy?.verifiedOn).length+'곳. 목록은 확정 추천이 아닙니다.</div>';
  const cards='<div class="grid">'+subset.map(p=>'<article class="item"><div class="eyebrow">'+esc(p.category||'장소')+' · '+esc(p.research?.level==='needs_identity'?'영업 확인 필요':'공개자료 조사')+'</div><h2><a href="../../places/'+esc(p.id)+'/">'+esc(p.name)+'</a></h2><p>'+esc(p.research?.summary||p.note||'')+'</p><p>'+esc(p.research?.address||'주소 확인 필요')+'</p><a href="../../places/'+esc(p.id)+'/">규정·출처 자세히</a></article>').join('')+'</div>';
- return shell(region+' 반려견 동반 장소 목록',region+' 지역 공개자료 조사 후보 '+subset.length+'곳. 업체 직접 검증 전 정보입니다.',header+cards);
+ return shell(region+' '+kind+' 공개자료 조사',region+' 지역 '+kind+' 공개자료 조사 후보 '+subset.length+'곳. 업체 직접 검증 전 정보입니다.',header+cards);
 }
 export function buildStaticPages(places){
  const result={};
