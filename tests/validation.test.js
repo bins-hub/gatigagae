@@ -1,0 +1,12 @@
+import {test} from 'node:test';
+import assert from 'node:assert/strict';
+import {readFileSync} from 'node:fs';
+import {validatePlaces} from '../validation.js';
+const data=JSON.parse(readFileSync(new URL('../data/places.json',import.meta.url),'utf8'));
+const clone=()=>structuredClone(data);
+test('현재 10곳은 필수 출처와 미확인 조건을 갖춤',()=>{assert.equal(data.length,10);assert.deepEqual(validatePlaces(data),[]);assert.equal(data.filter(p=>p.policy?.verifiedOn).length,0)});
+test('중복 ID는 거절',()=>{const x=clone();x[1].id=x[0].id;assert.ok(validatePlaces(x).some(s=>s.includes('duplicate')))});
+test('근거 없는 공식 정책으로 승격 금지',()=>{const x=clone();x[0].policy={verifiedOn:'2026-10-27',sourceUrl:'http://example.org',unlimited:true,zones:{indoor:true}};assert.ok(validatePlaces(x).some(s=>s.includes('policy')))});
+test('정식 정책이어도 체중 무제한을 임의 추정하지 않음',()=>{const x=clone();x[0].policy={verifiedOn:'2026-10-27',sourceUrl:'https://example.org/info',unlimited:false,zones:{indoor:true}};assert.ok(validatePlaces(x).some(s=>s.includes('weight upper')))});
+test('마릿수·요일·견종 구조 오류는 거절',()=>{const x=clone();x[0].policy={verifiedOn:'2026-10-27',sourceUrl:'https://example.org/info',maxKg:20,zones:{indoor:true},maxDogs:0,days:{fri:'open'},breeds:{blocked:[10]}};const messages=validatePlaces(x).join(' ');assert.match(messages,/maxDogs/);assert.match(messages,/visit day/);assert.match(messages,/breed list/)});
+test('확인 날짜 없는 출처를 공식 검증으로 취급하지 않음',()=>{const x=clone();x[0].research.reviewedOn='2026-13-66';assert.ok(validatePlaces(x).some(s=>s.includes('research date')))});
