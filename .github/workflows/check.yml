@@ -15,3 +15,9 @@ jobs:
         with:
           name: static-preview
           path: dist
+      - uses: actions/upload-artifact@v4
+        if: github.ref == 'refs/heads/main'
+        with:
+          name: operator-verification-queue
+          path: reports/
+          retention-days: 7
