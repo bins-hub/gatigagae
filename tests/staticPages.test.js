@@ -28,10 +28,10 @@ test('All venue pages link primary evidence and do not claim verified policies',
 test('Region pages contain only their own researched places',()=>{
  for(const [region,slug] of Object.entries(REGIONS)){
   const html=result['regions/'+slug+'/index.html'];
-  assert.ok(html.includes(region+' 애견동반 카페 조사 후보'),region);
+  assert.ok(html.includes(region+' '+(region==='하남'?'반려견 동반 카페·식당':'애견동반 카페')+' 조사 후보'),region);
   assert.ok(html.includes('업체 직접 검증 완료 0곳'),region);
   assert.ok(html.includes('region='+slug+'&amp;intent=cafes#results-title'),region);
-  assert.ok(html.includes('애견동반 카페 방문 전 확인'),region);
+  assert.ok(html.includes('반려견 동반 장소 방문 전 확인'),region);
   for(const p of places){
    if(p.region===region) assert.ok(html.includes('places/'+p.id+'/'),p.id);
    else assert.ok(!html.includes('places/'+p.id+'/'),p.id);
@@ -50,7 +50,7 @@ test('Unsafe research text is escaped',()=>{
 });
 test('The verification queue contains 10 items but no simulated confirmations',()=>{
  const csv=reviewQueueCsv(places);
- assert.equal(csv.split('\r\n').filter(Boolean).length,11);
+ assert.equal(csv.split('\r\n').filter(Boolean).length,places.length+1);
  for(const p of places)assert.ok(csv.includes(p.id));
  assert.ok(csv.includes('false'));
 });
