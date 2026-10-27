@@ -29,10 +29,11 @@ export function interpretPlaceQuery(query){
 export function queryMatchesPlace(place,query){
  const parsed=interpretPlaceQuery(query);
  if(!parsed.raw)return true;
- if(parsed.conflictingRegion||parsed.unsupported)return false;
+ if(parsed.conflictingRegion||(parsed.unsupported&&parsed.type!=='restaurants'))return false;
  if(!parsed.region&&parsed.rest.some(t=>OUTSIDE_LOCATION_TERMS.has(t)))return false;
  if(parsed.region&&place.region!==parsed.region)return false;
  if(parsed.type==='cafes'&&place.category!=='카페')return false;
+ if(parsed.type==='restaurants'&&place.category!=='식당')return false;
  const address=String(place.research?.address||'');
  const hay=[place.name,place.region,place.category,address].join(' ').normalize('NFKC').toLowerCase().replace(/\s+/g,'');
  return parsed.rest.every(t=>hay.includes(t.replace(/\s+/g,'')));
