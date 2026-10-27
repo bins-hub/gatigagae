@@ -118,6 +118,66 @@ a.intent-item:hover{border-color:var(--green);transform:translateY(-2px)}
 .sponsor-foot-dot{background:#659477;border-radius:50%;width:6px;height:6px;flex:none;margin-top:4px}
 @media(max-width:780px){.sponsor-brand{min-height:200px;padding:18px}.sponsor-art{width:120px;height:120px;right:-25px;top:49px}.sponsor-art svg{width:70px;height:70px}.sponsor-copy{max-width:81%}.sponsor-mark{font-size:23px}.sponsor-mark--ipet{font-size:20px}.sponsor-title{font-size:17px}}
 @media(max-width:600px){.sponsor-preview{padding:11px;border-radius:14px}.sponsor-brands{grid-template-columns:1fr;gap:9px}.sponsor-brand{min-height:158px;padding:16px 18px;border-radius:12px}.sponsor-art{width:132px;height:132px;right:-10px;top:16px}.sponsor-art svg{width:72px;height:72px}.sponsor-title{font-size:18px;margin:3px 0 0}.sponsor-copy{max-width:77%}.sponsor-chip{margin-top:4px}.sponsor-spark{right:109px;top:8px}.sponsor-foot{font-size:10px}}
+
+/* Visual refresh: playful editorial travel guide; presentation-only, no data or logic changes. */
+:root{--paper:#fffaf2;--ink:#173d36;--green:#174f43;--lime:#e6f89e;--line:#e5e7d9;--muted:#60736b}
+body{background:radial-gradient(circle at 95% 4%,#ffedda 0,transparent 30%),radial-gradient(circle at 0 27%,#edf5db 0,transparent 25%),var(--paper)}
+header{background:#fffdf8e8;backdrop-filter:blur(16px);position:relative;z-index:2;border-bottom-color:#e8e9dd}
+.nav{padding-top:16px;padding-bottom:16px}.brand{font-size:29px;letter-spacing:-1.6px}.brand span{color:#ff845d}
+.nav .pill{background:#e8f8a6;color:#315c35;border:1px solid #d9ec96}
+.hero{position:relative;grid-template-columns:1.1fr 1fr;gap:24px;padding:52px 0 35px;min-height:380px}
+.hero:before{content:"";position:absolute;z-index:-1;inset:22px -18px 16px;border-radius:36px;background:linear-gradient(115deg,#f9f6e9,#fff1e5 53%,#f3f7d8);border:1px solid #f0ebda}
+.hero .eyebrow{display:inline-flex;background:#dff298;color:#244c35;padding:7px 12px;border-radius:99px;letter-spacing:1.1px}
+.hero h1{font-size:clamp(40px,5vw,65px);letter-spacing:-3px;line-height:1.13;margin:20px 0 20px}
+.hero h1 span{color:#ef7959}.hero p{font-size:16px;max-width:380px;color:#5b7064}
+.art{height:300px;max-width:100%;background:#e4f2c8;border:7px solid #fff7e7;box-shadow:15px 16px 0 #fbdcc1;border-radius:44% 46% 28px 28px;transform:rotate(1deg)}
+.art svg{transform:scale(1.05)}
+.quick-discovery{background:#205b4b;color:#fff;border:0;box-shadow:0 18px 38px #1a594228;position:relative;overflow:hidden;padding:27px 30px;border-radius:24px}
+.quick-discovery:before{content:"✳";position:absolute;right:26px;top:-45px;font-size:175px;line-height:1;color:#ffffff10;pointer-events:none}
+.quick-discovery h2{font-size:28px;letter-spacing:-1px;color:#fff}
+.quick-discovery .quick-label{color:#edf3cb}
+.quick-discovery p{color:#e1e9df}
+.quick-input-row input{border:2px solid transparent;min-height:56px;box-shadow:0 5px 0 #153f3450}
+.quick-input-row button{background:#e8f59d;color:#183e32;border:0;min-height:56px;font-weight:900;box-shadow:0 5px 0 #153f3460}
+.quick-examples button{background:#ffffff1c;border:1px solid #ffffff50;color:#fff;transition:background .2s,transform .2s}
+.quick-examples button:hover{background:#ffffff38;transform:translateY(-2px)}
+.intent-entry{padding-top:32px}.intent-head .eyebrow{color:#eb7a53}
+.intent-head h2{font-size:clamp(29px,3.8vw,41px);letter-spacing:-1.8px}
+.intent-grid{gap:15px}.intent-item{border:1px solid #e1e6d9;box-shadow:0 9px 0 #e9ebdc;padding:22px;min-height:185px;border-radius:20px;transition:transform .2s,box-shadow .2s,background .2s}
+.intent-item:nth-child(1){background:#fff1e5}.intent-item:nth-child(2){background:#e5f1ce}.intent-item:nth-child(3){background:#e7f3f6}.intent-item:nth-child(4){background:#fff0d7}
+.intent-item:hover{transform:translateY(-4px);box-shadow:0 13px 0 #e4e8d7;border-color:#7da886}
+.intent-icon{font-size:33px}.intent-item strong{font-size:18px}
+.intent-go{margin-top:auto;font-weight:850}
+.search{border-radius:23px;background:#1e5b4e;box-shadow:0 14px 28px #173f3920}
+.section-top h2{font-size:28px}
+.grid{gap:20px}.card{border-radius:21px;border-color:#e1e6d9;box-shadow:0 8px 0 #e8e9de;transition:transform .2s,box-shadow .2s,border-color .2s;overflow:hidden}
+.card:hover{transform:translateY(-3px);box-shadow:0 12px 0 #e3e8db;border-color:#adc8ad}
+.card:nth-child(3n+1){border-top:5px solid #c9e67e}.card:nth-child(3n+2){border-top:5px solid #fab58a}.card:nth-child(3n){border-top:5px solid #a5d6d1}
+.card h3{font-size:21px}.card .status{border-radius:99px}
+.details,.card-actions .visit-link{border-radius:99px}.region-links a{border-radius:99px}
+.sponsor-preview{box-shadow:0 8px 0 #e2e9dc}
+@media(max-width:800px){.hero{min-height:0}.art{height:240px}.hero h1{font-size:44px}.intent-grid{gap:12px}}
+@media(max-width:600px){
+ body{background:var(--paper)}
+ .nav{padding:13px 17px}.brand{font-size:25px}
+ .hero{padding:18px 0 25px;display:block}
+ .hero:before{inset:2px -10px 6px;border-radius:24px;background:linear-gradient(135deg,#f5f8e4,#fff0e4)}
+ .hero .eyebrow{font-size:10px}
+ .hero h1{font-size:clamp(35px,9vw,44px);letter-spacing:-1.9px;margin:16px 0}
+ .hero p{font-size:14px;max-width:310px}
+ .art{display:none}
+ .quick-discovery{border-radius:19px;padding:20px;margin-top:0}
+ .quick-discovery h2{font-size:23px}
+ .quick-input-row{display:grid;grid-template-columns:1fr auto}
+ .quick-input-row input,.quick-input-row button{min-height:51px}
+ .intent-entry{padding-top:26px}
+ .intent-head h2{font-size:29px}
+ .intent-grid{gap:12px}
+ .intent-item{min-height:168px;padding:16px;border-radius:16px;box-shadow:0 5px 0 #e9ebdc}
+ .intent-item strong{font-size:16px}.intent-icon{font-size:28px}
+ .card{box-shadow:0 5px 0 #e8e9de}
+ .card:hover{transform:none;box-shadow:0 5px 0 #e8e9de}
+}
 </style></head><body>
 <header><nav class="nav" aria-label="주 메뉴"><a class="brand" href="#">같이가개<span>ㆍ</span></a><span class="pill">강아지와 함께하는 오늘</span><button id="favorite-nav">♡ 저장한 장소 <span id="save-count">0</span></button></nav></header>
 <main><section class="hero"><div><div class="eyebrow">GO TOGETHER. GOOD DAY.</div><h1>강아지와 함께,<br><span>어디로 갈까요?</span></h1><p>카페를 찾을 때, 주말 나들이를 준비할 때.<br>원하는 외출 목적부터 선택하고 동반 조건을 확인하세요.</p></div><div class="art"><small>이번 주말도, 같이가개</small><svg viewBox="0 0 400 270" role="img" aria-label="강아지와 함께하는 산책 일러스트"><path d="M0 233Q100 165 200 219T400 215V270H0" fill="#c6d8b2"/><circle cx="325" cy="78" r="24" fill="#f7d690"/><path d="M65 220V167Q65 151 83 151H206Q230 151 230 179V224H209V192H100V224H77" fill="#a76439"/><path d="M190 174V103Q190 75 217 75H248L273 108Q279 120 264 126H235V171" fill="#a76439"/><path d="M204 86Q171 64 173 103L184 145Q201 154 210 137Z" fill="#71432e"/><circle cx="244" cy="101" r="4" fill="#1d3831"/><path d="M267 112H277" stroke="#1d3831" stroke-width="9" stroke-linecap="round"/><path d="M66 171Q37 168 43 142" fill="none" stroke="#a76439" stroke-width="15" stroke-linecap="round"/><path d="M218 145L260 181L300 169" fill="none" stroke="#315b49" stroke-width="4"/><path d="M293 223L306 150L295 123H329L345 160L332 224" fill="#315b49"/><circle cx="310" cy="105" r="16" fill="#d8a379"/><path d="M292 102Q290 77 318 82L330 101Z" fill="#315b49"/><path d="M300 141L277 157L258 170" fill="none" stroke="#d8a379" stroke-width="12" stroke-linecap="round"/><path d="M182 230h67M282 230h62" stroke="#8da281" stroke-width="4" stroke-linecap="round"/></svg></div></section>
