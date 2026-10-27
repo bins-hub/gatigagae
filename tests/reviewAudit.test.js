@@ -3,11 +3,11 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {auditPlaces,auditCsv} from '../reviewAudit.js';
 const places=JSON.parse(readFileSync(new URL('../data/places.json',import.meta.url),'utf8'));
-test('All ten places are in prioritized verification audit',()=>{
+test('All 13 places are in prioritized verification audit',()=>{
  const items=auditPlaces(places,{asOf:'2026-10-27'});
- assert.equal(items.length,10);
+ assert.equal(items.length,places.length);
  assert.equal(items.filter(x=>x.verified).length,0);
- assert.equal(new Set(items.map(x=>x.id)).size,10);
+ assert.equal(new Set(items.map(x=>x.id)).size,places.length);
 });
 test('Conflicting address is urgent and operational identity warning remains urgent',()=>{
  const items=auditPlaces(places,{asOf:'2026-10-27'});
@@ -21,7 +21,7 @@ test('More than 90 days old becomes high priority even without conflicts',()=>{
 });
 test('Audit CSV is spreadsheet-ready and protects leading formula strings',()=>{
  const output=auditCsv(auditPlaces(places,{asOf:'2026-10-27'}));
- assert.equal(output.split('\r\n').filter(Boolean).length,11);
+ assert.equal(output.split('\r\n').filter(Boolean).length,places.length+1);
  assert.ok(output.includes('foraday'));
  assert.ok(output.includes('공개자료 상충'));
 });
