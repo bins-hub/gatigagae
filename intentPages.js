@@ -4,11 +4,12 @@ const notice='<div class="warning"><strong>업체 직접 검증 전</strong><p>�
 const sections={
  cafes:{slug:'cafes',title:'애견동반 카페 찾기',desc:'지역별 반려견 동반 카페 후보와 공개자료 출처, 체중·실내 이용 확인 사항을 한곳에서 비교합니다.'},
  weekend:{slug:'weekend',title:'강아지랑 갈만한 곳 · 나들이 준비',desc:'반려견과 주말 나들이를 준비할 때 방문 후보, 이동·실내 규정, 운영 확인 사항을 살펴보는 가이드입니다.'},
- indoor:{slug:'indoor',title:'비 오는 날 · 실내 애견동반 장소 확인',desc:'비 오는 날 반려견과 실내에 갈 장소를 찾을 때 알아볼 입장·좌석·이동장 규정 안내입니다.'}
+ indoor:{slug:'indoor',title:'비 오는 날 · 실내 애견동반 장소 확인',desc:'비 오는 날 반려견과 실내에 갈 장소를 찾을 때 알아볼 입장·좌석·이동장 규정 안내입니다.'},
+ restaurants:{slug:'restaurants',title:'강아지 동반 식당 찾기',desc:'하남 애견동반 식당 조사 후보와 이동장·견종·몸무게 조건 및 원문 출처를 방문 전에 확인하세요.'}
 };
 function regionLinks(places){
  return '<div class="grid">'+Object.entries(REGIONS).map(([region,slug])=>{
- const n=places.filter(p=>p.region===region).length;
+ const n=places.filter(p=>p.region===region&&p.category==='카페').length;
  return '<article class="item"><h2><a href="../../regions/'+esc(slug)+'/">'+esc(region)+' 카페 후보 '+n+'곳</a></h2><p>확인된 영업 여부가 아닌 공개자료 조사 목록입니다.</p></article>';
  }).join('')+'</div>';
 }
@@ -21,8 +22,17 @@ function cafesPage(places){
  const deep='<section class="panel"><h2>장소별 자료·출처 확인하기</h2><ul class="source">'+cafes.map(p=>'<li><a href="../../places/'+esc(p.id)+'/">'+esc(p.name)+'</a> <span class="muted">· '+esc(p.region)+' · '+esc(p.research?.level==='needs_identity'?'운영 여부 확인 필요':'최신 동반 규정 확인 필요')+'</span></li>').join('')+'</ul></section>';
  return shell(sections.cafes.title,sections.cafes.desc,intro+notice+practical+cards+deep);
 }
+function restaurantsPage(places){
+ const restaurants=places.filter(p=>p.category==='식당');
+ if(!restaurants.length)return null;
+ const opening='<div class="eyebrow">애견동반 식당 / 공개자료 조사</div><h1>강아지와 식사할 곳을 찾고 계신가요?</h1><p>현재 직접 검증되지 않은 식당 '+restaurants.length+'곳의 공개자료를 조사했습니다. 이동장·유모차가 필수인지, 소형견과 중형견 기준이 무엇인지, 동반 가능한 좌석이 실내인지 먼저 확인하세요.</p>';
+ const checklist='<section class="panel"><h2>식당을 선택하기 전 4가지 확인</h2><ol><li>실내 착석인지 테라스 한정인지 확인하세요.</li><li>반려견 체중·견종 제한과 이동장·유모차 필수 여부를 확인하세요.</li><li>식사 시간과 웨이팅 중 반려견 동반이 가능한지 물어보세요.</li><li>동반 가능한 마릿수, 매너벨트, 예약·추가요금을 확인하세요.</li></ol><p>아래 자료는 다른 플랫폼에 게시된 업체 안내를 참고한 것으로 현재 운영 조건을 보증하지 않습니다.</p></section>';
+ const links='<h2>현재 조사된 식당 후보 '+restaurants.length+'곳</h2><div class="grid">'+restaurants.map(p=>'<article class="item"><div class="eyebrow">'+esc(p.region)+' · 업체 직접 검증 전</div><h2><a href="../../places/'+esc(p.id)+'/">'+esc(p.name)+'</a></h2><p>'+esc(p.research?.summary||'')+'</p><p class="muted">체중: '+esc(p.research?.weight||'미확인')+'</p><a href="../../places/'+esc(p.id)+'/">동반 조건·원문 확인 ↗</a></article>').join('')+'</div>';
+ const last='<section class="panel"><h2>다른 조건으로 찾기</h2><div class="actions"><a href="../../?region=hanam&intent=cafes#results-title">하남 전체 조사 후보 보기</a><a href="../cafes/">애견동반 카페 후보</a></div></section>';
+ return shell(sections.restaurants.title,sections.restaurants.desc,opening+notice+checklist+links+last);
+}
 function weekendPage(places){
- const intro='<div class="eyebrow">강아지랑 갈만한 곳 / 나들이 준비</div><h1>강아지랑 이번 주말, 어디 갈까요?</h1><p>나들이 목적부터 정하면 검색이 쉬워집니다. 현재 같이가개는 <strong>카페 조사 후보만</strong> 수록하고 있어 산책로·식당·숙박을 실제 동선으로 묶어 추천하지는 않습니다.</p>';
+ const intro='<div class="eyebrow">강아지랑 갈만한 곳 / 나들이 준비</div><h1>강아지랑 이번 주말, 어디 갈까요?</h1><p>나들이 목적부터 정하면 검색이 쉬워집니다. 현재 같이가개에는 카페·식당 조사 후보가 있지만 산책로·숙박 자료와 실제 동선·영업시간 검증이 없어 완성된 코스로 추천하지 않습니다.</p>';
  const checklist='<section class="panel"><h2>반려견 동반 나들이 3단계</h2><ol><li><strong>지역 정하기</strong> — 이동 가능한 하남·남양주·양평 중 원하는 곳 선택</li><li><strong>방문 후보 찾기</strong> — 카페 소개를 확인하고 실내 이용·운동 공간이 실제 제공되는지 확인</li><li><strong>출발 전 확인하기</strong> — 영업일, 입장 조건, 요금·주차·대기 여부를 전화로 점검</li></ol><p>공개자료의 매장별 조건이 상충할 수 있으므로 확정 코스와 이동시간은 제공하지 않습니다.</p></section>';
  const links='<h2>지역부터 살펴보세요</h2>'+regionLinks(places);
  const next='<section class="panel"><h2>함께 확인할 주제</h2><div class="actions"><a href="../cafes/">지역별 애견동반 카페</a><a href="../indoor/">비 오는 날 실내 동반 조건</a><a href="../../#search-form">반려견 조건 검색</a></div></section>';
@@ -38,8 +48,10 @@ function indoorPage(places){
 export function buildIntentPages(places){
  if(!Array.isArray(places))throw Error('Venue data must be array');
  const cafes=cafesPage(places),outings=weekendPage(places),indoor=indoorPage(places);
+ const restaurants=restaurantsPage(places);
  const pages={};
  if(cafes)pages['guides/cafes/index.html']=cafes;
+ if(restaurants)pages['guides/restaurants/index.html']=restaurants;
  // General guides have distinct practical content and do not invent business categories.
  if(places.length){pages['guides/weekend/index.html']=outings;pages['guides/indoor/index.html']=indoor;}
  return pages;
@@ -50,6 +62,6 @@ export function intentCards(places){
   {id:'cafes',label:'애견동반 카페',subtitle:'지역별 카페 조사',href:cafes?'./guides/cafes/':null,count:cafes},
   {id:'weekend',label:'강아지랑 갈만한 곳',subtitle:'주말 나들이 준비',href:places.length?'./guides/weekend/':null,count:0},
   {id:'indoor',label:'실내 애견동반',subtitle:'비 오는 날 체크',href:places.length?'./guides/indoor/':null,count:0},
-  {id:'restaurants',label:'강아지 동반 식당',subtitle:'식당 자료 조사 중',href:null,count:0}
+  {id:'restaurants',label:'강아지 동반 식당',subtitle:'공개자료 조사 후보',href:places.some(p=>p.category==='식당')?'./guides/restaurants/':null,count:places.filter(p=>p.category==='식당').length}
  ];
 }
