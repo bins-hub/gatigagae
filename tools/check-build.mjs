@@ -1,6 +1,6 @@
 import fs from 'node:fs';
 import {validatePlaces} from '../validation.js';
-import {REGIONS} from '../staticPages.js';
+import {REGIONS,escapeHtml} from '../staticPages.js';
 const html=fs.readFileSync('dist/index.html','utf8');
 const robots=fs.readFileSync('dist/robots.txt','utf8');
 const places=JSON.parse(fs.readFileSync('data/places.json','utf8'));
@@ -15,7 +15,7 @@ for(const venue of places){
  const name='dist/places/'+venue.id+'/index.html';
  if(!fs.existsSync(name))throw Error('Missing venue page '+name);
  const page=fs.readFileSync(name,'utf8');
- if(!page.includes('noindex,nofollow')||!page.includes(venue.name))throw Error('Invalid venue detail: '+venue.id);
+ if(!page.includes('noindex,nofollow')||!page.includes(escapeHtml(venue.name)))throw Error('Invalid venue detail: '+venue.id);
  if(!html.includes('./places/'+venue.id+'/'))throw Error('Homepage missing link to venue: '+venue.id);
 }
 for(const slug of Object.values(REGIONS)){
