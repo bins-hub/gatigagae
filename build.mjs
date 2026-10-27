@@ -2,6 +2,7 @@ import {validatePlaces} from './validation.js';
 import path from 'node:path';
 import {buildStaticPages,reviewQueueCsv} from './staticPages.js';
 import {auditPlaces,auditCsv} from './reviewAudit.js';
+import {geoCoverage} from './geo.js';
 import fs from 'node:fs';
 const places=JSON.parse(fs.readFileSync('data/places.json','utf8'));
 const problems=validatePlaces(places);
@@ -16,6 +17,7 @@ for(const [page,contents] of Object.entries(pages)){
 }
 fs.mkdirSync('reports',{recursive:true});fs.writeFileSync('reports/review-queue.csv',reviewQueueCsv(places));
 fs.writeFileSync('reports/verification-priority.csv',auditCsv(auditPlaces(places,{asOf:new Date().toISOString().slice(0,10)})));
+fs.writeFileSync('reports/geolocation-readiness.json',JSON.stringify(geoCoverage(places),null,2)+'\n');
 console.log('Built '+Object.keys(pages).length+' detail and region pages, plus private review queue for '+places.length+' candidates.');
 
 console.log(`Built preview: ${places.length} research candidates; ${places.filter(p=>p.policy?.verifiedOn).length} policy-verified places.`);
