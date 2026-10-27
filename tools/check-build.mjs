@@ -10,7 +10,7 @@ for(const x of ['/* MATCHING_MODULE */','/* RESEARCH_MODULE */','/* PLACE_DATA *
 if(!robots.includes('Disallow: /'))throw Error('Unexpected search index setting');
 if(validatePlaces(places).length)throw Error('Source data invalid');
 for(const p of places)if(!html.includes(p.name))throw Error('Place absent from static bundle: '+p.name);
-if(!html.includes('자료 버전 0.5.0'))throw Error('Version mismatch');
+if(!html.includes('자료 버전 0.6.0'))throw Error('Version mismatch');
 for(const venue of places){
  const name='dist/places/'+venue.id+'/index.html';
  if(!fs.existsSync(name))throw Error('Missing venue page '+name);
@@ -25,6 +25,8 @@ for(const slug of Object.values(REGIONS)){
 if(!fs.existsSync('reports/review-queue.csv'))throw Error('Verification review queue not generated');
 if(fs.existsSync('dist/review-queue.csv'))throw Error('Internal review queue is accidentally public');
 if(!fs.existsSync('reports/verification-priority.csv'))throw Error('Missing operations audit priority list');
+if(!fs.existsSync('reports/geolocation-readiness.json'))throw Error('Missing evidence-based geolocation readiness report');
+if(fs.existsSync('dist/geolocation-readiness.json'))throw Error('Internal geo report must never be public');
 if(fs.existsSync('dist/verification-priority.csv'))throw Error('Operations report is accidentally public');
 if(places.some(p=>p.policy?.verifiedOn))throw Error('Unexpected verified policies: confirm authorization before publishing');
-console.log('v0.4 bundle validated:',places.length,'unverified research venues');
+console.log('v0.6 bundle validated:',places.length,'unverified research venues');
