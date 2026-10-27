@@ -12,5 +12,5 @@ test('Quick search reuses proven filters and clears stale restrictions',()=>{
   assert.ok(html.includes(token),token);
 });
 test('Quick examples and source disclaimers never claim current permitted admission',()=>{
- for(const x of ['data-query="남양주 애견동반 카페"','data-query="양평 강아지 동반 카페"','data-query="하남 반려견 동반 카페"','카페 조사 후보','입장 규정은 매장에 확인','현재 조사된 식당 0곳','noindex,nofollow'])assert.ok(html.includes(x),x);
+ for(const x of ['data-query="남양주 애견동반 카페"','data-query="양평 강아지 동반 카페"','data-query="하남 반려견 동반 카페"','카페·식당 조사 후보','입장 규정은 매장에 직접 확인','식당 조사 후보 · 2곳','noindex,nofollow'])assert.ok(html.includes(x),x);
 });
