@@ -24,5 +24,7 @@ for(const slug of Object.values(REGIONS)){
 }
 if(!fs.existsSync('reports/review-queue.csv'))throw Error('Verification review queue not generated');
 if(fs.existsSync('dist/review-queue.csv'))throw Error('Internal review queue is accidentally public');
+if(!fs.existsSync('reports/verification-priority.csv'))throw Error('Missing operations audit priority list');
+if(fs.existsSync('dist/verification-priority.csv'))throw Error('Operations report is accidentally public');
 if(places.some(p=>p.policy?.verifiedOn))throw Error('Unexpected verified policies: confirm authorization before publishing');
 console.log('v0.4 bundle validated:',places.length,'unverified research venues');
