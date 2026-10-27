@@ -13,7 +13,7 @@ test('Haversine returns zero at same coordinate and one-degree distance within 1
  const d=distanceKm({lat:0,lng:0},{lat:1,lng:0});assert.ok(d>111&&d<112,d);
 });
 test('No known places have fabricated geolocation coordinates',()=>{
- assert.deepEqual(geoCoverage(places),{candidates:10,ready:0,pending:10,needsSourceVerification:places.map(x=>x.id)});
+ assert.deepEqual(geoCoverage(places),{candidates:places.length,ready:0,pending:places.length,needsSourceVerification:places.map(x=>x.id)});
  assert.equal(sortByVerifiedDistance(places,{lat:37,lng:127}).length,0);
 });
 test('Only sourced and verified coordinate records can enter sorting',()=>{
