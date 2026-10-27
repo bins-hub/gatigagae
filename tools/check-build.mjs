@@ -4,13 +4,13 @@ import {REGIONS,escapeHtml} from '../staticPages.js';
 const html=fs.readFileSync('dist/index.html','utf8');
 const robots=fs.readFileSync('dist/robots.txt','utf8');
 const places=JSON.parse(fs.readFileSync('data/places.json','utf8'));
-const required=['id="breed"','id="dogs"','id="day"','id="weight"','id="zone"','id="region"','id="keyword"','id="results"','data-copy','noindex,nofollow'];
+const required=['id="save-profile"','id="clear-profile"','id="bottom-saved"','id="pet-profile-status"','id="breed"','id="dogs"','id="day"','id="weight"','id="zone"','id="region"','id="keyword"','id="results"','data-copy','noindex,nofollow'];
 for(const x of required)if(!html.includes(x))throw Error('Missing build component: '+x);
-for(const x of ['/* MATCHING_MODULE */','/* RESEARCH_MODULE */','/* PLACE_DATA */'])if(html.includes(x))throw Error('Uncompiled placeholder: '+x);
+for(const x of ['/* MATCHING_MODULE */','/* RESEARCH_MODULE */','/* PROFILE_MODULE */','/* PLACE_DATA */'])if(html.includes(x))throw Error('Uncompiled placeholder: '+x);
 if(!robots.includes('Disallow: /'))throw Error('Unexpected search index setting');
 if(validatePlaces(places).length)throw Error('Source data invalid');
 for(const p of places)if(!html.includes(p.name))throw Error('Place absent from static bundle: '+p.name);
-if(!html.includes('자료 버전 0.6.0'))throw Error('Version mismatch');
+if(!html.includes('자료 버전 0.7.0'))throw Error('Version mismatch');
 for(const venue of places){
  const name='dist/places/'+venue.id+'/index.html';
  if(!fs.existsSync(name))throw Error('Missing venue page '+name);
@@ -29,4 +29,4 @@ if(!fs.existsSync('reports/geolocation-readiness.json'))throw Error('Missing evi
 if(fs.existsSync('dist/geolocation-readiness.json'))throw Error('Internal geo report must never be public');
 if(fs.existsSync('dist/verification-priority.csv'))throw Error('Operations report is accidentally public');
 if(places.some(p=>p.policy?.verifiedOn))throw Error('Unexpected verified policies: confirm authorization before publishing');
-console.log('v0.6 bundle validated:',places.length,'unverified research venues');
+console.log('v0.7 UI bundle validated:',places.length,'unverified research venues');
