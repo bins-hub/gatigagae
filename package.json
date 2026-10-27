@@ -1,11 +1,12 @@
 {
   "name": "gatigagae",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "private": true,
   "type": "module",
   "scripts": {
     "test": "node --test",
     "build": "node build.mjs",
-    "start": "python3 -m http.server 8080"
+    "start": "python3 -m http.server 8080",
+    "check:build": "node tools/check-build.mjs"
   }
 }
