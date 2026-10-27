@@ -50,12 +50,12 @@ test('Reject missing source, invalid dates, future dates and invented competitio
   {...base(),monthlyPc:'-100'},
  ]){const result=importDemand([item],hyp);assert.equal(result.accepted.length,0,JSON.stringify(item));}
 });
-test('Actual restaurant keyword research is marked data unsupported regardless of supplied volume',()=>{
+test('Haman restaurant keyword research retains unverified candidates even with supplied demand',()=>{
  const row={...base(),keyword:'하남 애견동반 식당',monthlyMobile:'6000'};
  const result=importDemand([row],hyp).accepted[0];
- assert.equal(result.needsVenueResearch,true);
+ assert.equal(result.needsVenueResearch,false);
  assert.equal(result.publicPageApproved,false);
- assert.equal(result.landingRoute,'');
+ assert.equal(result.landingRoute,'guides/restaurants/');
 });
 test('Expired keyword data is marked stale and sorted after newer data',()=>{
  const other={...base(),keyword:'양평 애견동반 카페',monthlyPc:'99999',checkedOn:'2026-01-01'};
