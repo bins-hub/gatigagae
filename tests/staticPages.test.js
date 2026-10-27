@@ -30,6 +30,8 @@ test('Region pages contain only their own researched places',()=>{
   const html=result['regions/'+slug+'/index.html'];
   assert.ok(html.includes(region+' 애견동반 카페 조사 후보'),region);
   assert.ok(html.includes('업체 직접 검증 완료 0곳'),region);
+  assert.ok(html.includes('region='+slug+'&amp;intent=cafes#results-title'),region);
+  assert.ok(html.includes('애견동반 카페 방문 전 확인'),region);
   for(const p of places){
    if(p.region===region) assert.ok(html.includes('places/'+p.id+'/'),p.id);
    else assert.ok(!html.includes('places/'+p.id+'/'),p.id);
