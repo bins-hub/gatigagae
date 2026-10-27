@@ -14,3 +14,9 @@ test('Quick search reuses proven filters and clears stale restrictions',()=>{
 test('Quick examples and source disclaimers never claim current permitted admission',()=>{
  for(const x of ['data-query="남양주 애견동반 카페"','data-query="양평 강아지 동반 카페"','data-query="하남 반려견 동반 카페"','카페·식당 조사 후보','입장 규정은 매장에 직접 확인','식당 조사 후보 · 2곳','noindex,nofollow'])assert.ok(html.includes(x),x);
 });
+test('Active conditions are shown and can be cleared without erasing saved data',()=>{
+ for(const token of ['id="active-filters"','class="active-filter-chip"','id="clear-filters"','function resetFilters()','filterBar.hidden=!activeConditions.length'])assert.ok(html.includes(token),token);
+ const reset=html.slice(html.indexOf('function resetFilters()'),html.indexOf("$('#active-filters').addEventListener"));
+ assert.ok(reset.includes("$('#exclude-limited').checked=true"));
+ assert.ok(!reset.includes('localStorage')&&!reset.includes('saved.clear()'));
+});

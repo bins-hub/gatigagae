@@ -49,7 +49,7 @@ test('Existing sourced-place search retains prominence and handles preview close
  assert.ok(source.includes('grid-template-columns:1fr;gap:9px'));
  assert.ok(source.includes('.sponsor-art--mouly{color:'));
  assert.ok(source.includes('.sponsor-art--ipetsmom{color:'));
- assert.ok(source.includes('자료 버전 0.12.2'));
+ assert.ok(source.includes('자료 버전 0.12.3'));
 
  assert.ok(source.includes('id="quick-search-form"'));
  assert.ok(source.includes('noindex,nofollow'));
