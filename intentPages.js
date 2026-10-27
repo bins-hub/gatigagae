@@ -1,4 +1,5 @@
 import {REGIONS,shell,escapeHtml} from './staticPages.js';
+import {stayResearchLeads,validateStayResearch} from './stayResearch.js';
 const esc=escapeHtml;
 const notice='<div class="warning"><strong>업체 직접 검증 전</strong><p>아래 장소는 외부 공개자료로 확인한 조사 후보입니다. 현재 영업·실내 동반·체중 및 견종 조건은 보장되지 않습니다. 방문 전에 매장에 직접 확인하세요.</p></div>';
 const sections={
@@ -49,11 +50,13 @@ function indoorPage(places){
 function staysPage(places){
  const stays=places.filter(p=>['펜션','숙소','호텔','캠핑장'].includes(p.category));
  if(stays.length)throw Error('숙소 실제 등록 시 안내 문구·검색 분기·공식 출처 검토 후 별도 배포 필요');
+ const issues=validateStayResearch(stayResearchLeads);if(issues.length)throw Error(issues.join('; '));
  const intro='<div class="eyebrow">반려동물 동반 숙소 / 예약 전 확인</div><h1>애견동반 펜션, 무엇부터 확인할까요?</h1><p><strong>애견동반 펜션</strong>과 <strong>반려동물 동반 숙소</strong>는 숙박 검색에 자주 쓰는 표현이지만, 반려동물 종류·체중·마릿수와 이용할 수 있는 공간은 시설마다 다릅니다. 독채나 풀빌라라는 이름만으로 반려견의 마당·수영장 이용을 보장할 수 없습니다.</p>';
  const current='<section class="panel"><h2>현재 등록된 숙소 '+stays.length+'곳</h2><p>업체 직접 검증 전 · 현재 같이가개에서 출처와 운영 조건을 확인해 게시한 숙소는 <strong>0곳</strong>입니다. 아직 예약 가능한 펜션 목록이나 가격·후기를 제공하지 않습니다. 카페·식당을 펜션으로 표시하지 않습니다.</p></section>';
+ const leads='<section class="panel"><h2>외부자료 조사 후보 '+stayResearchLeads.length+'곳 · 예약 가능 여부 미확인</h2><p>아래는 출처가 확인되는 <strong>조사 대상</strong>이며 예약 가능한 숙소 목록이나 입장 보증이 아닙니다. 숙소 운영자와 현재 반려동물 동반 규정은 직접 확인하지 않았습니다.</p><div class="grid">'+stayResearchLeads.map(s=>'<article class="item"><div class="eyebrow">'+esc(s.region)+' '+esc(s.area)+' · 외부자료 조사</div><h2>'+esc(s.name)+'</h2><p>'+esc(s.evidence)+'</p><p><strong>확인 필요:</strong> '+esc(s.pending)+'</p><p class="muted">자료 확인 '+esc(s.reviewedOn)+' · 업체 직접 검증 전</p><a href="'+esc(s.sourceUrl)+'" target="_blank" rel="noopener noreferrer">'+esc(s.sourceLabel)+' 원문 보기 ↗</a></article>').join('')+'</div></section>';
  const details='<section class="panel"><h2>예약 전에 확인할 6가지</h2><ol><li><strong>반려동물 종류</strong> — 강아지 외 고양이 등도 허용하는지, 객실별 조건이 다른지</li><li><strong>몸무게·견종·마릿수</strong> — 소형견·대형견 기준, 맹견 등 제한, 다견 추가 허용 여부</li><li><strong>추가요금</strong> — 한 마리당 숙박 요금, 보증금, 청소비와 취소·환불 기준</li><li><strong>객실·독채·마당</strong> — 실내 출입, 침구 이용, 울타리와 문단속, 다른 투숙객과의 공용 공간</li><li><strong>수영장·편의시설</strong> — 반려견 수영 가능 여부, 계절 운영, 목욕 시설, 배변 처리 규정</li><li><strong>예약 가능한 날짜</strong> — 해당 객실의 실제 공실, 동반 조건 재확인과 예약 채널 원문</li></ol></section>';
  const search='<section class="panel"><h2>이런 검색어로 조건을 좁혀 보세요</h2><p>하남·남양주·양평 애견동반 펜션, 대형견 동반 독채 펜션, 다견 동반 숙소, 애견동반 풀빌라처럼 <strong>지역 + 반려견 조건 + 숙소 유형</strong>으로 확인하면 편리합니다. 이 문구는 검색 수요 실측치나 추천 순위가 아닙니다.</p><div class="actions"><a href="../../#quick-search-form">현재 조사 장소 검색</a><a href="../weekend/">반려견 나들이 준비</a></div><p class="muted">검색창에 펜션을 입력해도 확인된 숙소가 생기기 전에는 다른 업종을 대신 추천하지 않습니다.</p></section>';
- return shell(sections.stays.title,sections.stays.desc,intro+current+details+search);
+ return shell(sections.stays.title,sections.stays.desc,intro+current+leads+details+search);
 }
 export function buildIntentPages(places){
  if(!Array.isArray(places))throw Error('Venue data must be array');

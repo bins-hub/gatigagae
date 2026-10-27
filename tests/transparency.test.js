@@ -58,5 +58,5 @@ test('Venue names remain safely HTML escaped in feedback attributes',()=>{
  assert.ok(!rendered.includes('data-venue-name="<img'));
 });
 test('Mobile search results have a source-date clue and direct correction draft link',()=>{
- for(const fragment of ['card-evidence','외부자료 확인일','dataCaution','/#report-correction','자료 버전 0.12.4'])assert.ok(main.includes(fragment),fragment);
+ for(const fragment of ['card-evidence','외부자료 확인일','dataCaution','/#report-correction','자료 버전 0.12.5'])assert.ok(main.includes(fragment),fragment);
 });
