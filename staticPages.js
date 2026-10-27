@@ -50,12 +50,12 @@ export function buildStaticPages(places){
 }
 export function reviewQueueCsv(places){
  const fields=['id','name','region','evidence_reviewed_on','verified_policy','research_level','needs_identity','source_count','missing_phone','missing_address','notes'];
- const csvCell=x=>'"'+String(x??'').replaceAll('"','""').replace(/^[=+@\-]/,'\\u0027$&')+'"';
+ const csvCell=x=>'"'+String(x??'').replaceAll('"','""').replace(/^[=+@-]/,x=>"'"+x)+'"';
  const lines=[fields.map(csvCell).join(',')];
  for(const p of places){
   const r=p.research||{};
   const row=[p.id,p.name,p.region,r.reviewedOn||'',!!p.policy?.verifiedOn,r.level||'',r.level==='needs_identity',(r.sources||[]).length,!r.phone,!r.address,r.warning||''];
   lines.push(row.map(csvCell).join(','));
  }
- return '\\uFEFF'+lines.join('\\r\\n')+'\\r\\n';
+ return '\uFEFF'+lines.join('\r\n')+'\r\n';
 }
