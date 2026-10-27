@@ -37,3 +37,18 @@ export function queryMatchesPlace(place,query){
  const hay=[place.name,place.region,place.category,address].join(' ').normalize('NFKC').toLowerCase().replace(/\s+/g,'');
  return parsed.rest.every(t=>hay.includes(t.replace(/\s+/g,'')));
 }
+
+export function queryCaution(query){
+ const terms=String(query||'').normalize('NFKC').trim().toLowerCase().split(/[\s,/.!?·()[\]{}]+/u).filter(Boolean);
+ if(!terms.length)return '';
+ const notices=[];
+ if(terms.some(t=>['근처','가까운','내주변','내주위','주변','여기서','내근처'].includes(t)))
+  notices.push('현재 위치 권한과 실제 좌표가 연결되지 않아 거리순·가까운 순서가 아닙니다.');
+ if(terms.some(t=>['오늘','지금','현재','영업중','오픈','영업','오늘영업','오늘문연'].includes(t)))
+  notices.push('현재 영업 여부와 휴무일은 실시간으로 확인되지 않았습니다.');
+ if(terms.some(t=>['실내','비오는날','우천','비','눈오는날','장마'].includes(t)))
+  notices.push('실내 좌석 동반 가능 여부는 업체의 최신 규정으로 확인되지 않았습니다.');
+ if(terms.some(t=>['입장가능','동반가능','확실히','가능한'].includes(t)))
+  notices.push('이 목록은 입장을 확약하지 않으며 방문 전 매장 확인이 필요합니다.');
+ return notices.join(' ');
+}
