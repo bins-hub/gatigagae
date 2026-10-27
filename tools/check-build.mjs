@@ -1,6 +1,7 @@
 import fs from 'node:fs';
 import {validatePlaces} from '../validation.js';
 import {REGIONS,escapeHtml} from '../staticPages.js';
+import {keywordHypotheses} from '../keywordResearch.js';
 const html=fs.readFileSync('dist/index.html','utf8');
 const robots=fs.readFileSync('dist/robots.txt','utf8');
 const places=JSON.parse(fs.readFileSync('data/places.json','utf8'));
@@ -10,7 +11,7 @@ for(const x of ['/* MATCHING_MODULE */','/* RESEARCH_MODULE */','/* PROFILE_MODU
 if(!robots.includes('Disallow: /'))throw Error('Unexpected search index setting');
 if(validatePlaces(places).length)throw Error('Source data invalid');
 for(const p of places)if(!html.includes(p.name))throw Error('Place absent from static bundle: '+p.name);
-if(!html.includes('자료 버전 0.7.0'))throw Error('Version mismatch');
+if(!html.includes('자료 버전 0.8.0'))throw Error('Version mismatch');
 for(const venue of places){
  const name='dist/places/'+venue.id+'/index.html';
  if(!fs.existsSync(name))throw Error('Missing venue page '+name);
@@ -24,9 +25,22 @@ for(const slug of Object.values(REGIONS)){
 }
 if(!fs.existsSync('reports/review-queue.csv'))throw Error('Verification review queue not generated');
 if(fs.existsSync('dist/review-queue.csv'))throw Error('Internal review queue is accidentally public');
+const expectedGuidePaths=['guides/cafes/index.html','guides/weekend/index.html','guides/indoor/index.html'];
+for(const name of expectedGuidePaths){
+ if(!fs.existsSync('dist/'+name))throw Error('Missing intent guide: '+name);
+ const page=fs.readFileSync('dist/'+name,'utf8');
+ if(!page.includes('noindex,nofollow')||!page.includes('업체 직접 검증 전'))throw Error('Guide lacks verified-state caution: '+name);
+}
+if(fs.existsSync('dist/guides/restaurants/index.html'))throw Error('Do not create empty restaurant doorway page');
+if(!html.includes('href="./guides/cafes/"')||!html.includes('id="intent-title"'))throw Error('Intent navigation missing');
+if(!html.includes('현재 조사된 식당 0곳'))throw Error('Unsupported restaurant inventory not marked');
+const expectedKeywords=keywordHypotheses(places);
+if(expectedKeywords.length!==90 || expectedKeywords.some(k=>k.measuredMonthlySearchVolume!==null||k.measuredCompetition!==null))throw Error('Invalid measured keyword hypotheses');
+if(!fs.existsSync('reports/keyword-hypotheses.csv'))throw Error('Private keyword audit not generated');
+if(fs.existsSync('dist/keyword-hypotheses.csv'))throw Error('Keyword research report must remain private');
 if(!fs.existsSync('reports/verification-priority.csv'))throw Error('Missing operations audit priority list');
 if(!fs.existsSync('reports/geolocation-readiness.json'))throw Error('Missing evidence-based geolocation readiness report');
 if(fs.existsSync('dist/geolocation-readiness.json'))throw Error('Internal geo report must never be public');
 if(fs.existsSync('dist/verification-priority.csv'))throw Error('Operations report is accidentally public');
 if(places.some(p=>p.policy?.verifiedOn))throw Error('Unexpected verified policies: confirm authorization before publishing');
-console.log('v0.7 UI bundle validated:',places.length,'unverified research venues');
+console.log('v0.8 intent-first bundle validated:',places.length,'unverified research venues');
