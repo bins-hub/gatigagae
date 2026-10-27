@@ -11,7 +11,7 @@ for(const x of ['/* MATCHING_MODULE */','/* RESEARCH_MODULE */','/* PROFILE_MODU
 if(!robots.includes('Disallow: /'))throw Error('Unexpected search index setting');
 if(validatePlaces(places).length)throw Error('Source data invalid');
 for(const p of places)if(!html.includes(p.name))throw Error('Place absent from static bundle: '+p.name);
-if(!html.includes('자료 버전 0.12.1'))throw Error('Version mismatch');
+if(!html.includes('자료 버전 0.12.2'))throw Error('Version mismatch');
 for(const venue of places){
  const name='dist/places/'+venue.id+'/index.html';
  if(!fs.existsSync(name))throw Error('Missing venue page '+name);
@@ -42,6 +42,7 @@ if(!html.includes('queryMatchesPlace(p,filter.query)'))throw Error('Natural Kore
 if(!html.includes('id="query-caution"')||!html.includes('queryCaution(filter.query)'))throw Error('Real-time and indoor query warnings are missing');
 for(const token of ['isBannerPreview(window.location.search)','bannerPreviewMode','shouldInsertBanner(i,list.length,bannerPreviewMode,bannerDismissed)','data-dismiss-banner','MOULY','아이펫스맘'])if(!html.includes(token))throw Error('Brand preview gate missing: '+token);
 if(html.includes('<a href="https://smartstore.naver.com/')||html.includes('data-banner-pixel'))throw Error('Unapproved store redirect/tracking in banner preview');
+for(const token of ['sponsor-brand--mouly','sponsor-brand--ipetsmom','<svg viewBox=','PAW PARTNERS','.sponsor-art--mouly{color:','.sponsor-art--ipetsmom{color:'])if(!html.includes(token))throw Error('Polished responsive banner asset missing: '+token);
 if(!html.includes('card-evidence')||!html.includes('/#report-correction'))throw Error('Search results must link correction note and show research date');
 if(!html.includes('/#visit-check'))throw Error('Venue visit checklist action missing');
 for(const token of ['id="quick-search-form"','id="quick-query"','interpretPlaceQuery(q)','카페 조사 후보'])if(!html.includes(token))throw Error('Top-level natural language search missing: '+token);
@@ -60,4 +61,4 @@ if(!fs.existsSync('reports/geolocation-readiness.json'))throw Error('Missing evi
 if(fs.existsSync('dist/geolocation-readiness.json'))throw Error('Internal geo report must never be public');
 if(fs.existsSync('dist/verification-priority.csv'))throw Error('Operations report is accidentally public');
 if(places.some(p=>p.policy?.verifiedOn))throw Error('Unexpected verified policies: confirm authorization before publishing');
-console.log('v0.12.1 banner-preview bundle validated:',places.length,'unverified research venues');
+console.log('v0.12.2 banner-design bundle validated:',places.length,'unverified research venues');
