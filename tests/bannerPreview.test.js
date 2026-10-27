@@ -25,6 +25,12 @@ test('MOULY and 아이펫스맘 are labeled as demo advertising, with no unverif
  assert.ok(!s.includes('<img '));
  assert.ok(!s.includes('<script'));
  assert.ok(!s.includes('https://'));
+ assert.ok(s.includes('sponsor-brand--mouly')&&s.includes('sponsor-brand--ipetsmom'));
+ assert.ok(s.includes('<svg viewBox=')&&s.includes('aria-hidden="true"'));
+ assert.ok(s.includes('PAW PARTNERS')&&s.includes('sponsor-title'));
+ assert.equal((s.match(/class="sponsor-brand sponsor-brand--/g)||[]).length,2);
+ assert.ok(!s.includes('data-track'));
+
 });
 test('Existing sourced-place search retains prominence and handles preview close',()=>{
  assert.ok(source.includes('const bannerPreviewMode=isBannerPreview(window.location.search);'));
@@ -32,6 +38,11 @@ test('Existing sourced-place search retains prominence and handles preview close
  assert.ok(source.includes('shouldInsertBanner(i,list.length,bannerPreviewMode,bannerDismissed)'));
  assert.ok(source.includes('bannerDismissed=true;render();return;'));
  assert.ok(source.includes('.sponsor-preview{grid-column:1/-1'));
+ assert.ok(source.includes('grid-template-columns:1fr;gap:9px'));
+ assert.ok(source.includes('.sponsor-art--mouly{color:'));
+ assert.ok(source.includes('.sponsor-art--ipetsmom{color:'));
+ assert.ok(source.includes('자료 버전 0.12.2'));
+
  assert.ok(source.includes('id="quick-search-form"'));
  assert.ok(source.includes('noindex,nofollow'));
 });
