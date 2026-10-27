@@ -12,7 +12,7 @@ test('Saved pet preferences must be explicit, removable and device-local',()=>{
  assert.ok(html.includes('id="clear-profile"'));
  assert.ok(html.includes('localStorage.setItem(PROFILE_KEY'));
  assert.ok(html.includes('localStorage.removeItem(PROFILE_KEY'));
- assert.ok(html.includes('petProfile'));
+ for(const fn of ['decodePetProfile','normalizePetProfile','encodePetProfile']) assert.ok(html.includes(fn),fn);
  assert.ok(html.includes('서버로 전송하지 않습니다'));
 });
 test('Bottom nav and sourced detail permalink remain available',()=>{
