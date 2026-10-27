@@ -1,5 +1,5 @@
 // Incoming candidate staging: never writes places.json or makes an admission promise.
-const isDate=s=>typeof s==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(s)&&new Date(s+'T00:00:00Z').toISOString().slice(0,10)===s;
+const isDate=s=>typeof s==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(s)&&Number.isFinite(Date.parse(s+'T00:00:00Z'))&&new Date(s+'T00:00:00Z').toISOString().slice(0,10)===s;
 const link=s=>typeof s==='string'&&/^https:\/\/[^\s/]+(?:\/[^\s]*)?$/i.test(s);
 const key=(name,region)=>String(region||'').normalize('NFKC').trim().toLocaleLowerCase('ko')+'|'+String(name||'').normalize('NFKC').trim().toLocaleLowerCase('ko').replace(/\s+/g,'');
 export function stagePlaceCandidates(existing,candidates,{supportedRegions=['하남','남양주','양평']}={}){
