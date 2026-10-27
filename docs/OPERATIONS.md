@@ -27,10 +27,10 @@ node tools/propose-correction.mjs dumon hours "업체 확인 후 기록할 정�
 
 **중요:** 이 기능은 사용자 인증된 관리자 웹사이트가 아닙니다. 저장소를 수정할 수 있는 운영자가 로컬에서 실행하는 스크립트입니다. 승인 결과도 공개 사이트에 자동 발행되지 않습니다.
 
-1. 운영자가 실제 근거를 확인한 뒤 조사 정보 수정 초안을 작성합니다.
+1. 운영자가 실제 근거를 확인한 뒤 조사 정보 수정 초안을 작성합니다. 아래 `example.org`는 동작 형식 예시일 뿐 유효한 매장 근거가 아닙니다.
 
 ```sh
-node tools/propose-correction.mjs dumon hours "실제 확인된 영업시간" https://official.example.org/policy 2026-10-27
+node tools/propose-correction.mjs dumon hours "실제 확인된 영업시간" https://example.org/actual-source 2026-10-27
 ```
 
 2. `reports/correction-drafts/`에서 만들어진 JSON을 검토합니다. `previousValue`에 기존 값이 기록되므로 데이터가 바뀐 경우 오래된 초안은 승인할 수 없습니다.
@@ -68,6 +68,33 @@ npm test && npm run build && npm run check:build
 - 공식 정보 출처와 확인일을 보관합니다. 비공개 전화 확인 기록에 대해 가짜 URL을 만들어서는 안 됩니다.
 - 운영자 승인 후 `data/places.json` 수정, 테스트, 배포, 실제 페이지 검증을 수행합니다.
 - 변경·충돌·폐업 등 추가 확인 전까지 `policy:null`을 유지합니다.
+
+## 지역 확장 후보 일괄 조사 (준비 단계)
+
+`candidateImport.js`는 기존 장소와 신규 후보의 **ID·상호·지역 중복**, 출처 URL, 발견 날짜, 지원 지역을 점검합니다. 통과한 후보도 모두 `pending_manual_research` 상태이며 **자동 게시 대상 0곳**입니다.
+
+```sh
+node tools/stage-candidates.mjs 후보목록.json
+```
+
+입력: UTF-8 JSON 배열이며 각각 `id`, `name`, `region`, `category`, `discoveryUrl`, `discoveredOn`을 담아야 합니다. 위 파일명은 예시이며 실제 장소 조사 파일이 있어야 합니다.
+
+결과: `reports/candidate-staging-*.json`. 기존 `data/places.json`은 수정하지 않습니다. 새 지역은 실제 자료와 지역 페이지 구조를 별도로 검증하기 전까지 오류 표시합니다.
+
+```json
+[
+  {
+    "id": "example-source",
+    "name": "가상 조사 후보",
+    "region": "남양주",
+    "category": "카페",
+    "discoveryUrl": "https://example.org/research",
+    "discoveredOn": "2026-10-27"
+  }
+]
+```
+
+**위 데이터는 기능 설명용 가상 예시입니다. 실제 매장 등록으로 사용하지 않습니다.**
 
 ## 남은 운영 개발
 - 인증된 관리자 화면, 업체 확인 기록 저장소, 검증된 제보 접수, 승인/반려 이력 관리
