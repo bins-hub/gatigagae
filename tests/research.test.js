@@ -2,8 +2,8 @@ import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 const places=JSON.parse(readFileSync(new URL('../data/places.json',import.meta.url),'utf8'));
-test('조사 대상 10곳 모두 조사 날짜·원문 출처 기록',()=>{
-  assert.equal(places.length,10);
+test('조사 대상 13곳 모두 조사 날짜·원문 출처 기록',()=>{
+  assert.equal(places.length,13);
   for(const p of places){
     assert.equal(p.research?.reviewedOn,'2026-10-27');
     assert.ok(p.research?.summary);
