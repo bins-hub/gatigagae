@@ -36,6 +36,7 @@ if(fs.existsSync('dist/guides/restaurants/index.html'))throw Error('Do not creat
 if(!html.includes('href="./guides/cafes/"')||!html.includes('id="intent-title"'))throw Error('Intent navigation missing');
 if(!html.includes('parseSearchRoute(window.location.search)')||!html.includes('let filter={weight:null'))throw Error('Region-search deep links or optional weight missing');
 if(!html.includes('queryMatchesPlace(p,filter.query)'))throw Error('Natural Korean keyword search parser is missing');
+for(const token of ['id="quick-search-form"','id="quick-query"','interpretPlaceQuery(q)','카페 조사 후보'])if(!html.includes(token))throw Error('Top-level natural language search missing: '+token);
 if(!html.includes('현재 조사된 식당 0곳'))throw Error('Unsupported restaurant inventory not marked');
 const expectedKeywords=keywordHypotheses(places);
 if(expectedKeywords.length!==90 || expectedKeywords.some(k=>k.measuredMonthlySearchVolume!==null||k.measuredCompetition!==null))throw Error('Invalid measured keyword hypotheses');
