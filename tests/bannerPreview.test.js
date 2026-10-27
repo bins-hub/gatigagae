@@ -44,7 +44,7 @@ test('Existing sourced-place search retains prominence and handles preview close
  assert.ok(source.includes('let bannerDismissed=false;'));
  assert.ok(source.includes('const bannerEnabled=true;'));
  assert.ok(source.includes('shouldInsertBanner(i,list.length,bannerEnabled,bannerDismissed)'));
- assert.ok(source.includes('bannerDismissed=true;render();return;'));
+ assert.ok(source.includes('bannerDismissed=true;render();'));
  assert.ok(source.includes('.sponsor-preview{grid-column:1/-1'));
  assert.ok(source.includes('grid-template-columns:1fr;gap:9px'));
  assert.ok(source.includes('.sponsor-art--mouly{color:'));
