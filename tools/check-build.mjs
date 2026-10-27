@@ -11,12 +11,13 @@ for(const x of ['/* MATCHING_MODULE */','/* RESEARCH_MODULE */','/* PROFILE_MODU
 if(!robots.includes('Disallow: /'))throw Error('Unexpected search index setting');
 if(validatePlaces(places).length)throw Error('Source data invalid');
 for(const p of places)if(!html.includes(p.name))throw Error('Place absent from static bundle: '+p.name);
-if(!html.includes('자료 버전 0.9.0'))throw Error('Version mismatch');
+if(!html.includes('자료 버전 1.0.0'))throw Error('Version mismatch');
 for(const venue of places){
  const name='dist/places/'+venue.id+'/index.html';
  if(!fs.existsSync(name))throw Error('Missing venue page '+name);
  const page=fs.readFileSync(name,'utf8');
  if(!page.includes('noindex,nofollow')||!page.includes(escapeHtml(venue.name)))throw Error('Invalid venue detail: '+venue.id);
+ if(!page.includes('id="visit-check"')||!page.includes('id="visit-copy"')||!page.includes('체크 항목은 저장되지 않습니다'))throw Error('Missing safe visit checklist: '+venue.id);
  if(!html.includes('href="./places/${encodeURIComponent(p.id)}/"'))throw Error('Homepage missing dynamic venue permalinks');
 }
 for(const slug of Object.values(REGIONS)){
@@ -36,6 +37,8 @@ if(fs.existsSync('dist/guides/restaurants/index.html'))throw Error('Do not creat
 if(!html.includes('href="./guides/cafes/"')||!html.includes('id="intent-title"'))throw Error('Intent navigation missing');
 if(!html.includes('parseSearchRoute(window.location.search)')||!html.includes('let filter={weight:null'))throw Error('Region-search deep links or optional weight missing');
 if(!html.includes('queryMatchesPlace(p,filter.query)'))throw Error('Natural Korean keyword search parser is missing');
+if(!html.includes('id="query-caution"')||!html.includes('queryCaution(filter.query)'))throw Error('Real-time and indoor query warnings are missing');
+if(!html.includes('/#visit-check'))throw Error('Venue visit checklist action missing');
 for(const token of ['id="quick-search-form"','id="quick-query"','interpretPlaceQuery(q)','카페 조사 후보'])if(!html.includes(token))throw Error('Top-level natural language search missing: '+token);
 if(!html.includes('현재 조사된 식당 0곳'))throw Error('Unsupported restaurant inventory not marked');
 const expectedKeywords=keywordHypotheses(places);
@@ -52,4 +55,4 @@ if(!fs.existsSync('reports/geolocation-readiness.json'))throw Error('Missing evi
 if(fs.existsSync('dist/geolocation-readiness.json'))throw Error('Internal geo report must never be public');
 if(fs.existsSync('dist/verification-priority.csv'))throw Error('Operations report is accidentally public');
 if(places.some(p=>p.policy?.verifiedOn))throw Error('Unexpected verified policies: confirm authorization before publishing');
-console.log('v0.9.0 demand-quality bundle validated:',places.length,'unverified research venues');
+console.log('v1.0.0 visit-planning bundle validated:',places.length,'unverified research venues');
