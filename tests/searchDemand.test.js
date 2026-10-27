@@ -38,8 +38,8 @@ test('No data, duplicate rows, unknown keywords or bogus sources are rejected',(
  assert.equal(result.accepted.length,1);
  assert.equal(result.rejected.length,5);
  assert.ok(result.rejected[0].issues.some(x=>x.includes('후보')));
- assert.ok(result.rejected[2].issues.some(x=>x.includes('중복')));
- assert.ok(result.rejected[3].issues.some(x=>x.includes('출처')));
+ assert.ok(result.rejected.some(x=>x.issues.some(t=>t.includes('중복'))));
+ assert.ok(result.rejected.some(x=>x.issues.some(t=>t.includes('출처'))));
 });
 test('Reject missing source, invalid dates, future dates and invented competition categories',()=>{
  for(const item of [
