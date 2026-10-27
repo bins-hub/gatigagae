@@ -2,6 +2,7 @@ import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {validCoordinates,distanceKm,verifiedPoint,sortByVerifiedDistance,geoCoverage} from '../geo.js';
+import {validatePlaces} from '../validation.js';
 const places=JSON.parse(readFileSync(new URL('../data/places.json',import.meta.url),'utf8'));
 test('Coordinates require valid finite numeric latitude and longitude',()=>{
  assert.equal(validCoordinates({lat:37,lng:127}),true);
@@ -25,4 +26,14 @@ test('Only sourced and verified coordinate records can enter sorting',()=>{
 });
 test('User location is never guessed when access is not granted',()=>{
  assert.throws(()=>sortByVerifiedDistance(places,null),/Location permission/);
+});
+
+test('Dataset validator rejects unsupported or unproven coordinates',()=>{
+ const altered=structuredClone(places);
+ altered[0].geolocation={lat:91,lng:126,sourceUrl:'https://example.org/p',verifiedOn:'2026-10-27'};
+ assert.ok(validatePlaces(altered).some(x=>x.includes('geolocation')));
+ altered[0].geolocation={lat:37.6,lng:127,sourceUrl:'http://example.org',verifiedOn:'2026-10-27'};
+ assert.ok(validatePlaces(altered).some(x=>x.includes('geolocation')));
+ altered[0].geolocation={lat:37.6,lng:127,sourceUrl:'https://example.org/p',verifiedOn:'2026-10-27'};
+ assert.ok(!validatePlaces(altered).some(x=>x.includes('geolocation')));
 });
