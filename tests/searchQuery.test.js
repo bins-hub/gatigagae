@@ -10,11 +10,13 @@ test('Natural Korean phrase finds only existing Namyangju cafe leads',()=>{
  assert.ok(results.every(x=>x.region==='남양주'&&x.category==='카페'));
 });
 test('Nearby variants such as Yangpyeong pet cafe and Hanam dog cafe remain understood',()=>{
- assert.equal(matched('양평 강아지 동반 카페').length,3);
+ assert.equal(matched('양평 강아지 동반 카페').length,4);
  assert.equal(matched('하남 반려견 동반 카페').length,1);
  assert.equal(matched('남양주시 애견카페').length,6);
 });
-test('Restaurant, accommodation and park searches never falsely list researched cafes',()=>{
+test('Restaurant results contain only researched restaurants, never cafes',()=>{
+ const restaurants=matched('하남 애견동반 식당');assert.equal(restaurants.length,2);assert.ok(restaurants.every(p=>p.category==='식당'));
+
  for(const q of ['남양주 애견동반 식당','양평 맛집','하남 펜션','남양주 강아지 운동장','양평 반려견 공원']){
   assert.deepEqual(matched(q),[],q);
  }
