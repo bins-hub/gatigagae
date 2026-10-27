@@ -75,9 +75,28 @@ a.intent-item:hover{border-color:var(--green);transform:translateY(-2px)}
 .custom-search-header{margin:4px 0 16px}.custom-search-header h2{font-size:21px;margin:3px 0}
 @media(max-width:980px){.intent-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:600px){.intent-entry{padding-top:8px}.intent-grid{gap:10px}.intent-item{padding:14px;min-height:164px;border-radius:13px}.intent-item strong{font-size:15px}.intent-item small{font-size:11px}.intent-head h2{font-size:26px}.intent-examples{gap:7px}.intent-examples strong{width:100%}}
+.quick-discovery{background:#e7eee0;border:1px solid #c7d7c5;border-radius:18px;padding:20px 23px;margin:8px 0 30px}
+.quick-discovery h2{font-size:22px;margin:0 0 12px;line-height:1.35}
+.quick-label{display:block;font-size:13px;font-weight:700;margin-bottom:7px}
+.quick-input-row{display:flex;gap:8px}
+.quick-input-row input{background:white;border:1px solid #afc4ae;border-radius:10px;padding:12px 14px;flex:1;min-width:0;min-height:49px}
+.quick-input-row button{background:var(--green);border:0;border-radius:10px;padding:10px 22px;color:#fff;font-weight:750;min-height:49px}
+.quick-discovery p{font-size:12px;color:var(--muted);margin:9px 0}
+.quick-examples{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.quick-examples button{background:#ffffffb0;border:1px solid #c7d7c5;border-radius:999px;padding:7px 10px;font-size:12px;color:var(--ink)}
+@media(max-width:600px){.quick-discovery{padding:16px;margin-top:3px}.quick-discovery h2{font-size:20px}.quick-input-row button{padding:10px 13px;font-size:13px}.quick-examples button{font-size:11px}}
 </style></head><body>
 <header><nav class="nav" aria-label="주 메뉴"><a class="brand" href="#">같이가개<span>ㆍ</span></a><span class="pill">강아지와 함께하는 오늘</span><button id="favorite-nav">♡ 저장한 장소 <span id="save-count">0</span></button></nav></header>
 <main><section class="hero"><div><div class="eyebrow">GO TOGETHER. GOOD DAY.</div><h1>강아지와 함께,<br><span>어디로 갈까요?</span></h1><p>카페를 찾을 때, 주말 나들이를 준비할 때.<br>원하는 외출 목적부터 선택하고 동반 조건을 확인하세요.</p></div><div class="art"><small>이번 주말도, 같이가개</small><svg viewBox="0 0 400 270" role="img" aria-label="강아지와 함께하는 산책 일러스트"><path d="M0 233Q100 165 200 219T400 215V270H0" fill="#c6d8b2"/><circle cx="325" cy="78" r="24" fill="#f7d690"/><path d="M65 220V167Q65 151 83 151H206Q230 151 230 179V224H209V192H100V224H77" fill="#a76439"/><path d="M190 174V103Q190 75 217 75H248L273 108Q279 120 264 126H235V171" fill="#a76439"/><path d="M204 86Q171 64 173 103L184 145Q201 154 210 137Z" fill="#71432e"/><circle cx="244" cy="101" r="4" fill="#1d3831"/><path d="M267 112H277" stroke="#1d3831" stroke-width="9" stroke-linecap="round"/><path d="M66 171Q37 168 43 142" fill="none" stroke="#a76439" stroke-width="15" stroke-linecap="round"/><path d="M218 145L260 181L300 169" fill="none" stroke="#315b49" stroke-width="4"/><path d="M293 223L306 150L295 123H329L345 160L332 224" fill="#315b49"/><circle cx="310" cy="105" r="16" fill="#d8a379"/><path d="M292 102Q290 77 318 82L330 101Z" fill="#315b49"/><path d="M300 141L277 157L258 170" fill="none" stroke="#d8a379" stroke-width="12" stroke-linecap="round"/><path d="M182 230h67M282 230h62" stroke="#8da281" stroke-width="4" stroke-linecap="round"/></svg></div></section>
+<section class="quick-discovery" aria-labelledby="quick-title">
+<h2 id="quick-title">강아지와 갈 곳, 바로 찾아보세요</h2>
+<form id="quick-search-form" class="quick-form" role="search">
+<label for="quick-query" class="quick-label">지역 + 원하는 장소를 입력하세요</label>
+<div class="quick-input-row"><input id="quick-query" type="search" maxlength="80" autocomplete="off" placeholder="예: 남양주 애견동반 카페" aria-describedby="quick-disclaimer"><button type="submit">장소 찾기</button></div>
+</form>
+<p id="quick-disclaimer">현재는 하남·남양주·양평 <strong>카페 조사 후보</strong>만 제공해요. 식당·숙소는 아직 수집 중이며 입장 규정은 매장에 확인해야 합니다.</p>
+<div class="quick-examples" aria-label="검색 예시"><button type="button" data-query="남양주 애견동반 카페">남양주 애견동반 카페</button><button type="button" data-query="양평 강아지 동반 카페">양평 강아지 동반 카페</button><button type="button" data-query="하남 반려견 동반 카페">하남 반려견 동반 카페</button></div>
+</section>
 <section class="intent-entry" aria-labelledby="intent-title">
  <div class="intent-head"><div class="eyebrow">어떤 장소를 찾으세요?</div><h2 id="intent-title">오늘은 어디로 같이 갈까요?</h2><p>검색하고 싶은 주제부터 선택하세요. 지역·카페 목록은 몸무게를 몰라도 볼 수 있습니다.</p></div>
  <div class="intent-grid">
@@ -191,6 +210,19 @@ $('#clear-profile').addEventListener('click',()=>{
 $('#bottom-saved').addEventListener('click',()=>{
  $('#saved-only').checked=true;render();$('#results-title').scrollIntoView({behavior:'smooth'});
 });
+function runQuickQuery(text){
+ const q=String(text||'').trim();
+ if(!q){$('#quick-query').focus();return;}
+ const interpretation=interpretPlaceQuery(q);
+ const region=interpretation.region||'all';
+ $('#region').value=region;$('#keyword').value=q;$('#quick-query').value=q;
+ $('#saved-only').checked=false;$('#verified-only').checked=false;$('#exclude-limited').checked=false;
+ filter={...filter,region,query:q.toLocaleLowerCase('ko'),zone:'any'};
+ $('#zone').value='any';
+ render();$('#results-title').scrollIntoView({behavior:'smooth'});
+}
+$('#quick-search-form').addEventListener('submit',e=>{e.preventDefault();runQuickQuery($('#quick-query').value);});
+document.querySelectorAll('[data-query]').forEach(button=>button.addEventListener('click',()=>runQuickQuery(button.dataset.query)));
 const landing=parseSearchRoute(window.location.search);
 if(landing){$('#region').value=landing.region;filter={...filter,region:landing.region};}
 render();
