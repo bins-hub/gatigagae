@@ -4,7 +4,9 @@ export function isBannerPreview(search){
  try{return new URLSearchParams(search.startsWith('?')?search.slice(1):search).get('bannerPreview')==='1';}
  catch{return false;}
 }
-export function previewBannerHtml(){
+export function previewBannerHtml(style='brand'){
+ if(style==='recruit')return '<aside class="sponsor-preview sponsor-recruit" aria-label="광고주 모집형 배너 디자인 테스트"><div class="sponsor-top"><div class="sponsor-heading"><span class="sponsor-eyebrow">PAW PARTNERS</span><span class="sponsor-disclosure">광고 · 테스트 미리보기</span></div><button class="sponsor-close" type="button" data-dismiss-banner aria-label="브랜드 배너 미리보기 닫기">×</button></div><div class="recruit-layout"><div class="recruit-copy"><span class="recruit-kicker">같이가개 BRAND SPACE</span><strong>강아지와 함께하는 순간,<br>당신의 브랜드도 함께.</strong><p>반려생활에 어울리는 브랜드를 위한 광고 공간 디자인 시안입니다.</p><span class="recruit-cta">광고 파트너 자리 · 준비 중</span></div><div class="recruit-visual" aria-hidden="true"><span class="recruit-stamp">WITH PETS<br>WITH YOU</span><span class="recruit-paw">✳</span><span class="recruit-card">YOUR<br>BRAND<br>HERE <span>♡</span></span></div></div><p class="sponsor-foot">모집형 디자인 비교 테스트 · 실제 광고 모집, 신청, 가격 안내 또는 연락 기능은 운영하지 않습니다. 장소 검색 순위와 무관합니다.</p></aside>';
+
  const paw='<svg viewBox="0 0 110 110" aria-hidden="true" focusable="false"><ellipse cx="23" cy="37" rx="10" ry="14" transform="rotate(-23 23 37)"/><ellipse cx="46" cy="24" rx="10" ry="14" transform="rotate(-8 46 24)"/><ellipse cx="70" cy="25" rx="10" ry="14" transform="rotate(11 70 25)"/><ellipse cx="90" cy="42" rx="10" ry="14" transform="rotate(28 90 42)"/><path d="M56 49C43 49 39 59 32 67C25 74 22 86 32 92C41 99 49 91 56 91C64 91 70 100 80 93C91 85 83 73 77 65C71 56 66 49 56 49Z"/></svg>';
  return '<aside class="sponsor-preview" aria-label="브랜드 배너 테스트">'+
  '<div class="sponsor-top"><div class="sponsor-heading"><span class="sponsor-eyebrow">PAW PARTNERS</span><span class="sponsor-disclosure">광고 · 테스트 미리보기</span></div><button class="sponsor-close" type="button" data-dismiss-banner aria-label="브랜드 배너 미리보기 닫기">×</button></div>'+
