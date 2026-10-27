@@ -23,6 +23,8 @@ python3 -m http.server 8080 --directory dist
 - 모든 상세/지역 페이지는 외부 공개자료의 출처·주의 문구를 표시하며 검증 전 `noindex,nofollow`입니다. 지도는 네이버 지도 **검색 링크**이지 검증 좌표가 아닙니다.
 - `reports/review-queue.csv`는 빌드에서 자동 생성하는 **비공개 개발용 조사 목록**입니다. `dist`에 넣지 않으며 `.gitignore`로 원본 저장소 제출도 제외합니다.
 - `docs/DEVELOPMENT_ROADMAP.md`를 진행 상태의 유일한 기준 문서로 관리합니다.
+- `reviewAudit.js`: 운영불명·주소 충돌·90일 경과 우선순위 보고서 `reports/verification-priority.csv`를 생성합니다. `correctionDraft.js`와 `tools/propose-correction.mjs`는 출처 포함 **승인 대기 초안만** 작성하며 실제 공개 규정에 자동 반영하지 않습니다.
+- `.github/workflows/deploy-pages.yml`: 운영자가 Pages 설정을 GitHub Actions로 전환하면 자동 발행할 수 있도록 **비활성 상태로 준비**되어 있습니다. 기존 Pages는 수동 `gh-pages` 게시를 유지합니다.
 
 - 체중·지역·실내외·장소명/주소 검색에 **견종·동반 마릿수·방문 요일** 입력을 추가했습니다. 체중 제한 후보 제외(해제 가능), 자료 충돌 경고, 상담 문구 복사, 즐겨찾기, 상세 팝업, 외부 지도 검색도 유지됩니다.
 - 정확한 입장 판정은 **업체 직접 검증 정책**이 있는 경우에만 가능합니다. 확인되지 않은 견종·다견·요일 조건은 미확인으로 표시됩니다.
@@ -59,6 +61,12 @@ GitHub Pages 공개 주소: https://bins-hub.github.io/gatigagae/ . 실제 사�
 - [`docs/data-policy-schema.md`](docs/data-policy-schema.md): 공식 정책/외부 소개 구분, 검색 입력과 정책 모델, 입력 검증, 운영 절차.
 - 정책 검증 0곳은 그대로 유지하며, 검증 없는 장소를 입장 확약처럼 표기하지 않습니다.
 - 수정 전 소스 및 사이트 백업 브랜치: `backup/main-before-v0.5-20261027`, `backup/pages-before-v0.5-20261027`.
+
+## 운영 문서와 배포 자동화
+
+- [내부 검증·정보 수정 초안 절차](docs/OPERATIONS.md)
+- [GitHub Pages 자동 발행 전환 방법](docs/AUTO_DEPLOY.md)
+- [지속 개발 로드맵](docs/DEVELOPMENT_ROADMAP.md)
 
 ## 다음 작업
 
