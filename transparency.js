@@ -48,7 +48,7 @@ export function correctionPanelHtml(place,escape){
  '</section>';
 }
 // Inline browser script is static; venue values are read from safely escaped data-* attributes.
-export const CORRECTION_SCRIPT='<script>'+
+export const CORRECTION_SCRIPT='<script>const SUGGESTION_TYPES='+JSON.stringify(SUGGESTION_TYPES)+';'+makeSuggestionText.toString()+';'+
 '(()=>{const root=document.querySelector("#report-correction");if(!root)return;'+
 'const output=root.querySelector("#correction-status"),field=root.querySelector("#correction-detail"),url=root.querySelector("#correction-source");'+
 'root.querySelector("#correction-reset").addEventListener("click",()=>{field.value="";url.value="";output.textContent="입력 내용을 지웠습니다. 전송되거나 저장된 기록은 없습니다.";});'+
