@@ -22,8 +22,8 @@ test('Two sourced lodging leads have no invented operational verification or boo
   assert.ok(page.includes('문의 문구 전체'));
   assert.ok(page.includes('복사가 안 될 때 직접 복사하기'));
   assert.ok(page.includes('문구를 선택해 복사한 뒤'));
-  assert.ok(page.includes(inquiry.replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;').replaceAll("'",'&#39;')));
   const inquiry=buildStayInquiry(lead);
+  assert.ok(page.includes(inquiry.replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;').replaceAll("'",'&#39;')));
   assert.ok(inquiry.includes(lead.name));
   assert.match(inquiry,/체크인\/체크아웃 직접 입력/);
   assert.match(inquiry,/추가요금\/보증금/);
