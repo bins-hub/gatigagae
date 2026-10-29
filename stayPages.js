@@ -22,7 +22,7 @@ function breadcrumbs(path,name){
 }
 export function stayGuideMetadata(html){
  const path='guides/stays/';
- return enrich(html,{path,title:'가평·양평 애견동반 펜션 5곳 | 같이가개',description:'공식·공공 출처로 조사한 펜션 5곳의 동반 조건. 업체 직접 검증·실시간 예약 미확인.',graph:[{'@type':'CollectionPage',name:'가평·양평 애견동반 펜션 조사 후보',url:base+path,description:'업체 직접 검증 전 공개자료 조사 후보 5곳. 예약 가능 목록이 아닙니다.',mainEntity:{'@type':'ItemList',numberOfItems:stayResearchLeads.length,itemListElement:stayResearchLeads.map((s,i)=>({'@type':'ListItem',position:i+1,name:s.name,url:base+'stays/'+s.id+'/'}))}},breadcrumbs(path,'애견동반 펜션')]});
+ return enrich(html,{path,title:'가평·양평 애견동반 펜션 5곳 | 같이가개',description:'공식·공공 출처로 조사한 펜션 5곳의 동반 조건. 업체 직접 검증·실시간 예약 미확인.',graph:[{'@type':'CollectionPage',name:'가평·양평 애견동반 펜션 조사 후보',url:base+path,description:'업체 직접 검증 전 공개자료 조사 후보 5곳. 예약 가능 목록이 아닙니다.',mainEntity:{'@type':'ItemList',numberOfItems:stayResearchLeads.length,itemListElement:[...stayResearchLeads].sort((a,b)=>Number(!!b.conditions)-Number(!!a.conditions)).map((s,i)=>({'@type':'ListItem',position:i+1,name:s.name,url:base+'stays/'+s.id+'/'}))}},breadcrumbs(path,'애견동반 펜션')]});
 }
 export function stayQuestions(lead){
  const c=lead.conditions||{weight:"체중 조건 미확인",dogs:"마릿수 미확인",fee:"반려견 추가요금 미확인",rooms:"객실별 동반 조건 미확인",facilities:"마당·수영장·스파 이용 조건 미확인"};
