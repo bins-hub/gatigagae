@@ -10,7 +10,7 @@ test('Browse cards stay short while every lead has a reachable detail and privat
  for(const id of ['ddstarforest','seojongpool','gapyeong-art','gapyeong-skybridge','yangpyeong-blossom']){
   assert.ok(html.includes('../../stays/'+id+'/'));assert.ok(pages['stays/'+id+'/index.html'].includes('id="stay-inquiry"'));
  }
- assert.ok(html.includes('실제 숙소 사진 아님'));assert.ok(!html.includes('<img'));
+ assert.ok(html.includes('실제 숙소 사진 아님'));assert.ok(html.includes('<img'));assert.ok(html.includes('한국관광공사(TourAPI)'));
  assert.ok(html.includes('id="stay-compare-dock"'));assert.ok(html.includes('data-enhanced hidden'));
  for(const script of html.matchAll(/<script>(.*?)<\/script>/gs))assert.doesNotThrow(()=>new vm.Script(script[1]));
 });

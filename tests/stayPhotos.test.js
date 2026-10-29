@@ -11,8 +11,21 @@ test('Photo publication requires explicit permission evidence, credit, HTTPS and
 test('Official photo references are not presented as republishing permission or SEO images',()=>{
  assert.equal(Object.keys(stayPhotoSources).length,5);
  for(const [id,record] of Object.entries(stayPhotoSources)){
+  if(id==='ddstarforest'){assert.equal(approvedStayPhotos(record).length,5);continue;}
   assert.equal(approvedStayPhotos(record).length,0);
   const html=stayGalleryHtml({id},record);assert.ok(html.includes(record.pageUrl.replaceAll('&','&amp;')));assert.ok(!html.includes('<img'));
  }
- const html=stayGalleryHtml({id:'test'},approved);assert.ok(html.includes('&lt;테스트&gt;'));assert.ok(html.includes('사진 출처'));assert.ok(html.includes('width="1200" height="800"'));assert.ok(html.includes('role="region"'));assert.ok(html.includes('object-fit')===false);
+ const html=stayGalleryHtml({id:'test'},approved);assert.ok(html.includes('&lt;테스트&gt;'));assert.ok(html.includes('사진 원문'));assert.ok(html.includes('width="1200" height="800"'));assert.ok(html.includes('role="region"'));assert.ok(html.includes('object-fit')===false);
+});
+
+test('Public-licensed original photos are used only for the matching lodging and SEO metadata',async()=>{
+ const {buildStayPages}=await import('../stayPages.js');
+ const record=stayPhotoSources.ddstarforest,photos=approvedStayPhotos(record);
+ assert.equal(record.eligibilityBasis,'public-license');assert.equal(photos.length,5);
+ assert.ok(record.permissionEvidenceUrl.startsWith('https://www.data.go.kr/'));
+ for(const photo of photos){assert.ok(photo.src.startsWith('https://tong.visitkorea.or.kr/cms/resource/'));assert.equal(photo.width,940);assert.equal(photo.height,627);}
+ const pages=buildStayPages(),dd=pages['stays/ddstarforest/index.html'];
+ const graph=JSON.parse(dd.match(/<script type="application\/ld\+json">(.*?)<\/script>/s)[1])['@graph'];assert.equal(graph[0].image.length,5);
+ for(const [path,page] of Object.entries(pages))if(!path.includes('ddstarforest'))assert.ok(!page.includes('3346812_image2_1.jpg'));
+ assert.ok(dd.includes('촬영 시기 미상'));assert.ok(dd.includes('사진 원문'));assert.ok(dd.includes('이용 조건'));
 });
