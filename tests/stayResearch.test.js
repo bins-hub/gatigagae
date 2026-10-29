@@ -2,6 +2,7 @@ import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {stayResearchLeads,validateStayResearch,buildStayInquiry} from '../stayResearch.js';
+import {buildStayPages} from '../stayPages.js';
 import {buildIntentPages} from '../intentPages.js';
 const places=JSON.parse(readFileSync(new URL('../data/places.json',import.meta.url),'utf8'));
 
@@ -12,6 +13,7 @@ test('Five sourced lodging leads have no invented operational verification or bo
  assert.match(page,/외부자료 조사 후보 5곳/);
  assert.match(page,/현재 등록된 숙소 0곳/);
  for(const lead of stayResearchLeads){
+  const page=buildStayPages()["stays/"+lead.id+"/index.html"];
   assert.equal(lead.operatorVerified,false);
   assert.equal(lead.bookableVerified,false);
   assert.ok(page.includes(lead.sourceUrl));
@@ -29,10 +31,11 @@ test('Five sourced lodging leads have no invented operational verification or bo
   assert.match(inquiry,/추가요금\/보증금/);
   assert.match(inquiry,/취소·환불 규정/);
  }
- assert.match(page,/id="stay-copy-status" role="status" aria-live="polite"/);
- assert.match(page,/navigator.clipboard.writeText\(message\)/);
- assert.match(page,/자동 복사가 지원되지 않습니다\. 해당 숙소 카드의/);
- assert.match(page,/\.stay-manual textarea:focus-visible/);
+ const detail=Object.values(buildStayPages())[0];
+ assert.match(detail,/id="stay-copy-status" role="status" aria-live="polite"/);
+ assert.match(detail,/navigator.clipboard.writeText\(message\)/);
+ assert.match(detail,/자동 복사가 지원되지 않습니다\. 아래/);
+ assert.match(detail,/\.stay-manual textarea:focus-visible/);
  assert.doesNotMatch(page,/fetch\(|localStorage|XMLHttpRequest/);
  assert.match(page,/noindex,nofollow/);
 });
@@ -47,7 +50,7 @@ test('Lodging leads require unique IDs, HTTPS source and explicit unverified sta
 
 
 test('Each lodging research lead has an accessible, resettable, non-persistent inquiry preparation checklist',()=>{
- const page=buildIntentPages(places)['guides/stays/index.html'];
+ const page=Object.values(buildStayPages()).join('');
  assert.equal((page.match(/class="stay-prep" autocomplete="off"/g)||[]).length,5);
  assert.equal((page.match(/<legend>숙소에 문의할 내용 준비 체크<\/legend>/g)||[]).length,5);
  assert.equal((page.match(/type="checkbox"/g)||[]).length,25);

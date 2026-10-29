@@ -12,7 +12,7 @@ for(const x of ['/* MATCHING_MODULE */','/* RESEARCH_MODULE */','/* PROFILE_MODU
 if(!robots.includes('Disallow: /'))throw Error('Unexpected search index setting');
 if(validatePlaces(places).length)throw Error('Source data invalid');
 for(const p of places)if(!html.includes(p.name))throw Error('Place absent from static bundle: '+p.name);
-if(!html.includes('자료 버전 0.13.1'))throw Error('Version mismatch');
+if(!html.includes('자료 버전 0.14.0'))throw Error('Version mismatch');
 for(const venue of places){
  const name='dist/places/'+venue.id+'/index.html';
  if(!fs.existsSync(name))throw Error('Missing venue page '+name);
@@ -53,11 +53,13 @@ if(!html.includes('href="./guides/stays/"')||!html.includes('조사 후보 5곳'
 if(!fs.readFileSync('dist/guides/stays/index.html','utf8').includes('예약 가능한 펜션 목록이나 가격·후기를 제공하지 않습니다'))throw Error('Lodging guide falsely implies bookable inventory');
 if(!fs.readFileSync('dist/guides/stays/index.html','utf8').includes('외부자료 조사 후보 5곳'))throw Error('Lodging source-research leads missing');
 const stayGuide=fs.readFileSync('dist/guides/stays/index.html','utf8');
-for(const id of ['ddstarforest','seojongpool'])if(!stayGuide.includes('id="stay-manual-'+id+'" readonly rows="12"'))throw Error('Accessible manual inquiry copy fallback missing: '+id);
-if(!stayGuide.includes('자동 복사가 지원되지 않습니다. 해당 숙소 카드의'))throw Error('Copy failure does not explain manual fallback');
-if((stayGuide.match(/class="stay-prep" autocomplete="off"/g)||[]).length!==stayResearchLeads.length)throw Error('Lodging preparation checklist missing');
-if((stayGuide.match(/type="checkbox"/g)||[]).length!==stayResearchLeads.length*5||(stayGuide.match(/type="reset"/g)||[]).length!==stayResearchLeads.length)throw Error('Lodging checklist inputs or reset missing');
-if(!stayGuide.includes('체크해도 숙소의 규정이나 예약 가능 여부가 확인된 것은 아닙니다'))throw Error('Lodging checklist must not imply operator verification');
+if(stayGuide.includes('class="stay-prep"'))throw Error('Inquiry preparation should be on detail pages, not browsing cards');
+for(const lead of stayResearchLeads){
+ const page=fs.readFileSync('dist/stays/'+lead.id+'/index.html','utf8');
+ if(!page.includes('id="stay-inquiry"')||!page.includes('id="stay-manual-'+lead.id+'" readonly rows="12"'))throw Error('Lodging detail inquiry fallback missing');
+ if((page.match(/type="checkbox"/g)||[]).length!==5||!page.includes('type="reset"'))throw Error('Lodging detail checklist missing');
+ if(!page.includes('체크해도 숙소의 규정이나 예약 가능 여부가 확인된 것은 아닙니다'))throw Error('Lodging checklist must not imply verification');
+}
 const expectedKeywords=keywordHypotheses(places);
 if(expectedKeywords.length!==90 || expectedKeywords.some(k=>k.measuredMonthlySearchVolume!==null||k.measuredCompetition!==null))throw Error('Invalid measured keyword hypotheses');
 if(!fs.existsSync('reports/keyword-hypotheses.csv'))throw Error('Private keyword audit not generated');
@@ -72,4 +74,4 @@ if(!fs.existsSync('reports/geolocation-readiness.json'))throw Error('Missing evi
 if(fs.existsSync('dist/geolocation-readiness.json'))throw Error('Internal geo report must never be public');
 if(fs.existsSync('dist/verification-priority.csv'))throw Error('Operations report is accidentally public');
 if(places.some(p=>p.policy?.verifiedOn))throw Error('Unexpected verified policies: confirm authorization before publishing');
-console.log('v0.13.1 lodging inquiry fallback bundle validated:',places.length,'unverified research venues');
+console.log('v0.14.0 lodging inquiry fallback bundle validated:',places.length,'unverified research venues');

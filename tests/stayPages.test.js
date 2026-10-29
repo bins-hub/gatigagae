@@ -7,8 +7,8 @@ import {buildIntentPages} from '../intentPages.js';
 const places=JSON.parse(readFileSync(new URL('../data/places.json',import.meta.url)));
 const schema=html=>JSON.parse(html.match(/<script type="application\/ld\+json">(.*?)<\/script>/s)[1]);
 test('Sourced detail pages have unique self canonicals, visible FAQ matching schema, and no offers or ratings',()=>{
- const pages=buildStayPages(),titles=new Set();assert.equal(Object.keys(pages).length,3);
- for(const lead of stayResearchLeads.filter(s=>s.conditions)){
+ const pages=buildStayPages(),titles=new Set();assert.equal(Object.keys(pages).length,5);
+ for(const lead of stayResearchLeads){
   const path='stays/'+lead.id+'/',html=pages[path+'index.html'];
   const title=html.match(/<title>(.*?)<\/title>/)[1];assert.ok(!titles.has(title));titles.add(title);
   assert.ok(html.includes('rel="canonical" href="https://bins-hub.github.io/gatigagae/'+path+'"'));
@@ -18,7 +18,7 @@ test('Sourced detail pages have unique self canonicals, visible FAQ matching sch
   assert.equal(faq.mainEntity.length,3);
   stayQuestions(lead).forEach((q,i)=>{assert.equal(faq.mainEntity[i].name,q.question);assert.equal(faq.mainEntity[i].acceptedAnswer.text,q.answer);assert.ok(html.includes(q.answer));});
   assert.ok(!graph.some(x=>x.offers||x.aggregateRating));
-  assert.ok(html.includes('../../guides/stays/#stay-'+lead.id));
+  assert.ok(html.includes('id="stay-inquiry"'));
  }
 });
 test('Lodging collection links all researched sources and each supported detail; unknown fields stay unknown',()=>{
