@@ -1,4 +1,5 @@
 import fs from 'node:fs';
+import {stayResearchLeads} from '../stayResearch.js';
 import {validatePlaces} from '../validation.js';
 import {REGIONS,escapeHtml} from '../staticPages.js';
 import {keywordHypotheses} from '../keywordResearch.js';
@@ -11,7 +12,7 @@ for(const x of ['/* MATCHING_MODULE */','/* RESEARCH_MODULE */','/* PROFILE_MODU
 if(!robots.includes('Disallow: /'))throw Error('Unexpected search index setting');
 if(validatePlaces(places).length)throw Error('Source data invalid');
 for(const p of places)if(!html.includes(p.name))throw Error('Place absent from static bundle: '+p.name);
-if(!html.includes('자료 버전 0.13.0'))throw Error('Version mismatch');
+if(!html.includes('자료 버전 0.13.1'))throw Error('Version mismatch');
 for(const venue of places){
  const name='dist/places/'+venue.id+'/index.html';
  if(!fs.existsSync(name))throw Error('Missing venue page '+name);
@@ -48,14 +49,14 @@ if(!html.includes('card-evidence')||!html.includes('/#report-correction'))throw 
 if(!html.includes('/#visit-check'))throw Error('Venue visit checklist action missing');
 for(const token of ['id="quick-search-form"','id="quick-query"','interpretPlaceQuery(q)','카페 조사 후보'])if(!html.includes(token))throw Error('Top-level natural language search missing: '+token);
 if(!html.includes('식당 조사 후보 · 2곳'))throw Error('Restaurant research status incorrectly displayed');
-if(!html.includes('href="./guides/stays/"')||!html.includes('등록 숙소 0곳'))throw Error('Missing accurate zero-venue lodging guide link');
+if(!html.includes('href="./guides/stays/"')||!html.includes('조사 후보 5곳'))throw Error('Missing accurate zero-venue lodging guide link');
 if(!fs.readFileSync('dist/guides/stays/index.html','utf8').includes('예약 가능한 펜션 목록이나 가격·후기를 제공하지 않습니다'))throw Error('Lodging guide falsely implies bookable inventory');
-if(!fs.readFileSync('dist/guides/stays/index.html','utf8').includes('외부자료 조사 후보 2곳'))throw Error('Lodging source-research leads missing');
+if(!fs.readFileSync('dist/guides/stays/index.html','utf8').includes('외부자료 조사 후보 5곳'))throw Error('Lodging source-research leads missing');
 const stayGuide=fs.readFileSync('dist/guides/stays/index.html','utf8');
 for(const id of ['ddstarforest','seojongpool'])if(!stayGuide.includes('id="stay-manual-'+id+'" readonly rows="12"'))throw Error('Accessible manual inquiry copy fallback missing: '+id);
 if(!stayGuide.includes('자동 복사가 지원되지 않습니다. 해당 숙소 카드의'))throw Error('Copy failure does not explain manual fallback');
-if((stayGuide.match(/class="stay-prep" autocomplete="off"/g)||[]).length!==2)throw Error('Lodging preparation checklist missing');
-if((stayGuide.match(/type="checkbox"/g)||[]).length!==10||(stayGuide.match(/type="reset"/g)||[]).length!==2)throw Error('Lodging checklist inputs or reset missing');
+if((stayGuide.match(/class="stay-prep" autocomplete="off"/g)||[]).length!==stayResearchLeads.length)throw Error('Lodging preparation checklist missing');
+if((stayGuide.match(/type="checkbox"/g)||[]).length!==stayResearchLeads.length*5||(stayGuide.match(/type="reset"/g)||[]).length!==stayResearchLeads.length)throw Error('Lodging checklist inputs or reset missing');
 if(!stayGuide.includes('체크해도 숙소의 규정이나 예약 가능 여부가 확인된 것은 아닙니다'))throw Error('Lodging checklist must not imply operator verification');
 const expectedKeywords=keywordHypotheses(places);
 if(expectedKeywords.length!==90 || expectedKeywords.some(k=>k.measuredMonthlySearchVolume!==null||k.measuredCompetition!==null))throw Error('Invalid measured keyword hypotheses');
@@ -71,4 +72,4 @@ if(!fs.existsSync('reports/geolocation-readiness.json'))throw Error('Missing evi
 if(fs.existsSync('dist/geolocation-readiness.json'))throw Error('Internal geo report must never be public');
 if(fs.existsSync('dist/verification-priority.csv'))throw Error('Operations report is accidentally public');
 if(places.some(p=>p.policy?.verifiedOn))throw Error('Unexpected verified policies: confirm authorization before publishing');
-console.log('v0.13.0 lodging inquiry fallback bundle validated:',places.length,'unverified research venues');
+console.log('v0.13.1 lodging inquiry fallback bundle validated:',places.length,'unverified research venues');

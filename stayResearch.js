@@ -16,6 +16,30 @@ export const stayResearchLeads=Object.freeze([
   reviewedOn:'2026-10-27',pending:'실제 투숙 객실의 견종·체중·마릿수 기준, 반려견 추가요금, 예약 가능 날짜',
   operatorVerified:false,bookableVerified:false
  }
+ ,{
+  id:'gapyeong-art',name:'가평 아트 애견동반 펜션',region:'가평',area:'청평면',
+  evidence:'공식 이용안내는 전 객실에 7kg 이하 반려견 1마리를 동반할 수 있다고 안내합니다. 반려묘는 제외됩니다.',
+  sourceLabel:'아트 펜션 · 공식 이용안내',sourceUrl:'https://www.art-petps.kr/reservation.html',
+  reviewedOn:'2026-10-29',pending:'예약할 날짜의 객실 운영 여부, 반려견 요금 변경 여부, 마당·침구 이용 범위',
+  conditions:{weight:'7kg 이하',dogs:'객실당 1마리',fee:'반려견 1마리 1박 10,000원 · 현장결제 안내',rooms:'전 객실 동반 안내 · 반려견만 가능, 반려묘 불가',facilities:'마당·침구·부대시설의 반려견 이용 범위는 별도 문의',address:'경기 가평군 청평면 고재길 13-30'},
+  operatorVerified:false,bookableVerified:false
+ },
+ {
+  id:'gapyeong-skybridge',name:'가평 하늘다리 애견동반 펜션',region:'가평',area:'북면',
+  evidence:'공식 이용안내는 지정 객실 4종에서 10kg 이하 반려견을 최대 2마리까지 동반하도록 안내합니다. 반려견의 수영장·히노끼탕 이용은 금지됩니다.',
+  sourceLabel:'하늘다리 펜션 · 공식 이용안내',sourceUrl:'https://gpskybridge.co.kr/reservation.html',
+  reviewedOn:'2026-10-29',pending:'반려견 동반 지정 객실의 공실, 체중별 추가요금 변경, 견종·비품과 현장 확인 절차',
+  conditions:{weight:'10kg 초과 입실 불가 안내',dogs:'최대 2마리',fee:'1마리·1박 기준 5kg 미만 10,000원 / 5~10kg 15,000원 · 현장결제 안내',rooms:'갈리아노·맥칼란·페노드·듀어스만 동반 안내',facilities:'반려견 수영장·히노끼탕 이용 불가 / 바비큐장 동반 안내',address:'경기 가평군 북면 백둔로467번길 2'},
+  operatorVerified:false,bookableVerified:false
+ },
+ {
+  id:'yangpyeong-blossom',name:'양평 블러썸 애견동반 스파 펜션',region:'양평',area:'서종면',
+  evidence:'공식 이용안내는 전 객실에 4kg 이하 소형견 1마리 동반과 사전 문의·유선 예약을 안내합니다. 객실 스파 안내만으로 반려견 입수를 판단하면 안 됩니다.',
+  sourceLabel:'블러썸 펜션 · 공식 이용안내',sourceUrl:'https://blossomps.kr/reservation.html',
+  reviewedOn:'2026-10-29',pending:'희망 객실의 동반 수락과 유선 예약, 배변훈련·털빠짐·공격성 조건, 스파의 반려견 이용 여부',
+  conditions:{weight:'4kg 이하 소형견',dogs:'객실당 1마리',fee:'반려견 1마리 1박 10,000원 · 현장결제 안내',rooms:'전 객실 동반 안내 · 사전 문의 및 유선 예약 필수',facilities:'스파의 반려견 입수 허용 여부는 미확인 · 별도 문의',address:'경기 양평군 서종면 도장계곡길 33'},
+  operatorVerified:false,bookableVerified:false
+ }
 ]);
 
 export function validateStayResearch(leads){

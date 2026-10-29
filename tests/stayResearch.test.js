@@ -5,11 +5,11 @@ import {stayResearchLeads,validateStayResearch,buildStayInquiry} from '../stayRe
 import {buildIntentPages} from '../intentPages.js';
 const places=JSON.parse(readFileSync(new URL('../data/places.json',import.meta.url),'utf8'));
 
-test('Two sourced lodging leads have no invented operational verification or bookings',()=>{
- assert.equal(stayResearchLeads.length,2);
+test('Five sourced lodging leads have no invented operational verification or bookings',()=>{
+ assert.equal(stayResearchLeads.length,5);
  assert.deepEqual(validateStayResearch(stayResearchLeads),[]);
  const page=buildIntentPages(places)['guides/stays/index.html'];
- assert.match(page,/외부자료 조사 후보 2곳/);
+ assert.match(page,/외부자료 조사 후보 5곳/);
  assert.match(page,/현재 등록된 숙소 0곳/);
  for(const lead of stayResearchLeads){
   assert.equal(lead.operatorVerified,false);
@@ -48,10 +48,10 @@ test('Lodging leads require unique IDs, HTTPS source and explicit unverified sta
 
 test('Each lodging research lead has an accessible, resettable, non-persistent inquiry preparation checklist',()=>{
  const page=buildIntentPages(places)['guides/stays/index.html'];
- assert.equal((page.match(/class="stay-prep" autocomplete="off"/g)||[]).length,2);
- assert.equal((page.match(/<legend>숙소에 문의할 내용 준비 체크<\/legend>/g)||[]).length,2);
- assert.equal((page.match(/type="checkbox"/g)||[]).length,10);
- assert.equal((page.match(/type="reset"/g)||[]).length,2);
+ assert.equal((page.match(/class="stay-prep" autocomplete="off"/g)||[]).length,5);
+ assert.equal((page.match(/<legend>숙소에 문의할 내용 준비 체크<\/legend>/g)||[]).length,5);
+ assert.equal((page.match(/type="checkbox"/g)||[]).length,25);
+ assert.equal((page.match(/type="reset"/g)||[]).length,5);
  assert.match(page,/체크해도 숙소의 규정이나 예약 가능 여부가 확인된 것은 아닙니다/);
  assert.match(page,/체크 내용은 같이가개 서버에 전송되거나 저장되지 않습니다/);
  assert.match(page,/\.stay-prep label\{display:flex;align-items:center;gap:10px;min-height:44px/);

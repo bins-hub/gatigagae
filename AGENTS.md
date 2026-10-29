@@ -33,3 +33,8 @@ Repository: `bins-hub/gatigagae` | Production: `https://bins-hub.github.io/gatig
 - Prefer conservative, reversible, tested changes, especially in navigation, SEO indexing, and public data.
 - If a task requires business confirmation, credentials, commercial integrations, or privacy policy decisions, document the blocker and proceed to the next safely independent task.
 - Keep documentation accurate: the current venue count is 13. Update version numbers and release notes together when cutting a version.
+
+## Search and answer discoverability (user requirement)
+- Every new or modified page must consider SEO, AEO and GEO (generative engine optimization): match its search intent, write unique titles/descriptions and question-led answers, use semantic headings and meaningful internal links, and retain source URLs, evidence dates and limitations.
+- Add canonical and structured data when appropriate, consistent with visible content. Never invent ratings, availability, demand or business verification.
+- SEO preparation does not authorize removing noindex or robots restrictions. Record the remaining indexing blockers.

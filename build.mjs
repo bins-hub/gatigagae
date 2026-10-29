@@ -1,6 +1,7 @@
 import {validatePlaces} from './validation.js';
 import path from 'node:path';
 import {buildStaticPages,reviewQueueCsv} from './staticPages.js';
+import {buildStayPages} from './stayPages.js';
 import {buildIntentPages} from './intentPages.js';
 import {keywordHypotheses,keywordHypothesisCsv} from './keywordResearch.js';
 import {blankDemandTemplate} from './searchDemand.js';
@@ -14,8 +15,8 @@ if(problems.length)throw Error('Invalid places data:\n'+problems.join('\n'));
 const html=fs.readFileSync('index.html','utf8').replace('/* MATCHING_MODULE */',fs.readFileSync('matching.js','utf8').replace('export function','function')).replace('/* RESEARCH_MODULE */',fs.readFileSync('researchScreen.js','utf8').replace('export function','function')).replace('/* PROFILE_MODULE */',fs.readFileSync('petProfile.js','utf8').replaceAll('export function','function')).replace('/* ROUTE_MODULE */',fs.readFileSync('searchRoute.js','utf8').replaceAll('export function','function')).replace('/* QUERY_MODULE */',fs.readFileSync('searchQuery.js','utf8').replaceAll('export function','function')).replace('/* BANNER_MODULE */',fs.readFileSync('bannerPreview.js','utf8').replaceAll('export function','function')).replace('/* VALIDATION_MODULE */',fs.readFileSync('validation.js','utf8').replace('export function','function')).replace('/* COMPARISON_MODULE */',fs.readFileSync('comparison.js','utf8').replaceAll('export function','function')).replace('/* PLACE_DATA */',JSON.stringify(places).replaceAll('<','\\u003c'));
 fs.mkdirSync('dist',{recursive:true});fs.writeFileSync('dist/index.html',html);fs.writeFileSync('dist/robots.txt','User-agent: *\nDisallow: /\n');
 
-const pages={...buildStaticPages(places),...buildIntentPages(places)};
-for(const section of ['places','regions','guides'])fs.rmSync(path.join('dist',section),{recursive:true,force:true});
+const pages={...buildStaticPages(places),...buildIntentPages(places),...buildStayPages()};
+for(const section of ['places','regions','guides','stays'])fs.rmSync(path.join('dist',section),{recursive:true,force:true});
 for(const [page,contents] of Object.entries(pages)){
  const dest=path.join('dist',page);fs.mkdirSync(path.dirname(dest),{recursive:true});fs.writeFileSync(dest,contents);
 }
