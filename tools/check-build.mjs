@@ -11,7 +11,7 @@ for(const x of ['/* MATCHING_MODULE */','/* RESEARCH_MODULE */','/* PROFILE_MODU
 if(!robots.includes('Disallow: /'))throw Error('Unexpected search index setting');
 if(validatePlaces(places).length)throw Error('Source data invalid');
 for(const p of places)if(!html.includes(p.name))throw Error('Place absent from static bundle: '+p.name);
-if(!html.includes('자료 버전 0.12.7'))throw Error('Version mismatch');
+if(!html.includes('자료 버전 0.12.8'))throw Error('Version mismatch');
 for(const venue of places){
  const name='dist/places/'+venue.id+'/index.html';
  if(!fs.existsSync(name))throw Error('Missing venue page '+name);
@@ -54,6 +54,9 @@ if(!fs.readFileSync('dist/guides/stays/index.html','utf8').includes('외부자�
 const stayGuide=fs.readFileSync('dist/guides/stays/index.html','utf8');
 for(const id of ['ddstarforest','seojongpool'])if(!stayGuide.includes('id="stay-manual-'+id+'" readonly rows="12"'))throw Error('Accessible manual inquiry copy fallback missing: '+id);
 if(!stayGuide.includes('자동 복사가 지원되지 않습니다. 해당 숙소 카드의'))throw Error('Copy failure does not explain manual fallback');
+if((stayGuide.match(/class="stay-prep" autocomplete="off"/g)||[]).length!==2)throw Error('Lodging preparation checklist missing');
+if((stayGuide.match(/type="checkbox"/g)||[]).length!==10||(stayGuide.match(/type="reset"/g)||[]).length!==2)throw Error('Lodging checklist inputs or reset missing');
+if(!stayGuide.includes('체크해도 숙소의 규정이나 예약 가능 여부가 확인된 것은 아닙니다'))throw Error('Lodging checklist must not imply operator verification');
 const expectedKeywords=keywordHypotheses(places);
 if(expectedKeywords.length!==90 || expectedKeywords.some(k=>k.measuredMonthlySearchVolume!==null||k.measuredCompetition!==null))throw Error('Invalid measured keyword hypotheses');
 if(!fs.existsSync('reports/keyword-hypotheses.csv'))throw Error('Private keyword audit not generated');
@@ -68,4 +71,4 @@ if(!fs.existsSync('reports/geolocation-readiness.json'))throw Error('Missing evi
 if(fs.existsSync('dist/geolocation-readiness.json'))throw Error('Internal geo report must never be public');
 if(fs.existsSync('dist/verification-priority.csv'))throw Error('Operations report is accidentally public');
 if(places.some(p=>p.policy?.verifiedOn))throw Error('Unexpected verified policies: confirm authorization before publishing');
-console.log('v0.12.7 lodging inquiry fallback bundle validated:',places.length,'unverified research venues');
+console.log('v0.12.8 lodging inquiry fallback bundle validated:',places.length,'unverified research venues');

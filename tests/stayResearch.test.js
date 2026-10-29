@@ -44,3 +44,17 @@ test('Lodging leads require unique IDs, HTTPS source and explicit unverified sta
  assert.ok(validateStayResearch([{...x,bookableVerified:true}]).length);
  assert.throws(()=>buildStayInquiry({...x,id:'not-in-research'}));
 });
+
+
+test('Each lodging research lead has an accessible, resettable, non-persistent inquiry preparation checklist',()=>{
+ const page=buildIntentPages(places)['guides/stays/index.html'];
+ assert.equal((page.match(/class="stay-prep" autocomplete="off"/g)||[]).length,2);
+ assert.equal((page.match(/<legend>숙소에 문의할 내용 준비 체크<\/legend>/g)||[]).length,2);
+ assert.equal((page.match(/type="checkbox"/g)||[]).length,10);
+ assert.equal((page.match(/type="reset"/g)||[]).length,2);
+ assert.match(page,/체크해도 숙소의 규정이나 예약 가능 여부가 확인된 것은 아닙니다/);
+ assert.match(page,/체크 내용은 같이가개 서버에 전송되거나 저장되지 않습니다/);
+ assert.match(page,/\.stay-prep label\{display:flex;align-items:center;gap:10px;min-height:44px/);
+ assert.doesNotMatch(page,/<form class="stay-prep"[^>]*\b(?:action|method|onsubmit)=/);
+ assert.doesNotMatch(page,/fetch\(|localStorage|XMLHttpRequest/);
+});
