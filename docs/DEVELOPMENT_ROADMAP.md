@@ -356,3 +356,12 @@
 - [x] 변경 전 양쪽 복구 브랜치: `backup/main-before-v0142-verification-20261030` (`8f20bdbcec5c3f07c78db2dbfbf120606f3ea601`), `backup/pages-before-v0142-verification-20261030` (`2967511c2168b78d6d7fca5c05aa49c6cab385cc`).
 - [x] 배포 검증 링크: [main CI](https://github.com/bins-hub/gatigagae/actions/runs/40830299476), [Pages](https://github.com/bins-hub/gatigagae/actions/runs/40830393389), [숙소 공개 화면](https://bins-hub.github.io/gatigagae/guides/stays/?v=0.14.2).
 - [ ] 후속 독립 작업: 숙소 갤러리의 남은 3장 실제 렌더링, 모바일 가로 넘침·스크롤 및 스크린리더 실기기 검수. 다른 4개 숙소의 사진 권리·업체 확인은 외부 근거 확보 전까지 보류. 검색 색인 차단 및 광고 외부 링크 미연결 유지.
+
+## 2026-10-30 v0.14.2 사진 안내 문구 정정 (동작 변경 없는 소규모 보완)
+
+- [x] 사전 복구: `backup/main-before-photo-caption-hotfix-20261030` (`ca8b7a0fb5a257211296ba6890b8892e5b2c8ca7`), `backup/pages-before-photo-caption-hotfix-20261030` (`2967511c2168b78d6d7fca5c05aa49c6cab385cc`).
+- [x] 댕댕별숲의 공개 사진 5장은 외관·마당 위주이므로 갤러리 안내가 객실 내부 사진도 제공하는 듯 보이지 않도록 수정. `stayPhotos.js`의 안내를 “사진을 좌우로 밀어 각 사진의 설명을 확인하세요. 사진에 없는 객실·시설은 숙소 공식 안내에서 확인하세요.”로 교체하고 회귀 테스트 추가.
+- [x] 개발 브랜치 `feature/photo-caption-accuracy-20261030` CI #40977642340: 142/142 테스트, npm build 및 빌드 검사 성공. 소스 main `edaaa29233fe7025c589fc795b8d3057366d34fb`.
+- [x] CI `static-preview`의 생성 파일 28개와 기존 `gh-pages` 비교: 27개 Git blob SHA 완전 동일, 댕댕별숲 상세 1개만 변경. 실제 발행 파일 SHA `7e7e8ccf1e6810cafa57fa468f7a6146391d6a77`가 CI 생성 파일 SHA와 완전히 일치. `gh-pages` 발행 `905830aa4ae4b7f88a0b0125ebbdc3710ef36ee8`, Pages #40977736558 성공.
+- [x] 공개 `/stays/ddstarforest/?v=0.14.2-hotfix-20261030`에서 새 문구, 사진 URL 5개, `noindex,nofollow` 확인. 13개 장소·배너·검색 및 다른 27개 정적 파일은 생성 파일 내용이 변경되지 않았음.
+- [ ] 실기기 390px·1280px 시각 검수, 갤러리 이미지 3장의 실제 렌더링 확인, 화면 낭독기 및 배너 대비 점검은 미완료. 사진 재게시 권리 미확보 숙소 4곳은 사진 직접 게재하지 않음.
