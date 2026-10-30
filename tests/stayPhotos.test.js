@@ -35,3 +35,18 @@ test('Gallery instructions do not promise room photos that were not supplied',()
  assert.ok(html.includes('사진에 없는 객실·시설은 숙소 공식 안내에서 확인하세요.'));
  assert.ok(!html.includes('객실·마당·외관을 확인하세요.'));
 });
+
+test('Gallery navigation is progressive, keyboard accessible and respects reduced motion',()=>{
+ const html=stayGalleryHtml({id:'ddstarforest'});
+ assert.ok(html.includes('data-stay-gallery tabindex="0"'));
+ assert.ok(html.includes('data-gallery-prev aria-controls="stay-photo-gallery"'));
+ assert.ok(html.includes('data-gallery-next aria-controls="stay-photo-gallery"'));
+ assert.ok(html.includes('role="status" aria-live="polite">1 / 5장'));
+ assert.ok(html.includes('gallery.addEventListener("keydown"'));
+ assert.ok(html.includes('prefers-reduced-motion: reduce'));
+ assert.ok(html.includes('controls.hidden=false'));
+ assert.equal((html.match(/class="stay-photo"/g)||[]).length,5);
+ const pending=stayGalleryHtml({id:'seojongpool'});
+ assert.ok(!pending.includes('data-gallery-next'));
+ assert.ok(!pending.includes('<img'));
+});
