@@ -29,3 +29,9 @@ test('Public-licensed original photos are used only for the matching lodging and
  for(const [path,page] of Object.entries(pages))if(!path.includes('ddstarforest'))assert.ok(!page.includes('3346812_image2_1.jpg'));
  assert.ok(dd.includes('촬영 시기 미상'));assert.ok(dd.includes('사진 원문'));assert.ok(dd.includes('이용 조건'));
 });
+
+test('Gallery instructions do not promise room photos that were not supplied',()=>{
+ const html=stayGalleryHtml({id:'ddstarforest'});
+ assert.ok(html.includes('사진에 없는 객실·시설은 숙소 공식 안내에서 확인하세요.'));
+ assert.ok(!html.includes('객실·마당·외관을 확인하세요.'));
+});
